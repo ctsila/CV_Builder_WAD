@@ -13,6 +13,20 @@
       "name": "Test User",
       "passwordHash": "$2a$10$sDLSB2rATXQdYngaGvp3vu.nRKCGAyTnFCrk0GpvIJiKeCeTbilay",
       "createdAt": "2026-05-11T13:06:04.725Z"
+    },
+    {
+      "id": "pG4saw7JoB5vfsiCIJov0",
+      "email": "planuser@example.com",
+      "name": "Plan User",
+      "passwordHash": "$2a$10$DGe3ykzs75H8jr3JojmpEuuoJDREtk2yZdAL/2HeX2D9CoXJHl0eu",
+      "createdAt": "2026-05-11T13:14:40.949Z"
+    },
+    {
+      "id": "y1fvh2njvXZ2W_AvpSbZ4",
+      "email": "planuser2@example.com",
+      "name": "Plan User",
+      "passwordHash": "$2a$10$XAxOsayftE/pr/E7Qw8GNeUooW22P2hpxQ3Vvx9SinWdQ.xcQ9Gg6",
+      "createdAt": "2026-05-11T13:14:57.574Z"
     }
   ],
   "profiles": [

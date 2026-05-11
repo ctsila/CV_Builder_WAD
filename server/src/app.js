@@ -70,7 +70,7 @@ async function main() {
     res.json({ profile: p })
   })
 
-  app.post('/api/vacancy/parse', (req, res) => {
+  app.post('/api/vacancy/parse', authRequired, (req, res) => {
     const { text } = req.body
     const analysis = generator.analyzeVacancy(text)
     res.json({ analysis })

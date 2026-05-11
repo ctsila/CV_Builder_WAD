@@ -1,9 +1,11 @@
 const apiBase = 'http://localhost:4000'
 
 let authToken = localStorage.getItem('authToken') || ''
+let theme = localStorage.getItem('theme') || 'light'
 
 const i18n = {
   EN: {
+    pageTitle: 'AI Resume Generator',
     authTitle: 'Authentication',
     localeTitle: 'Localization',
     profileTitle: 'Master Profile',
@@ -15,6 +17,30 @@ const i18n = {
     analysisTitle: 'Job Analysis',
     resumeTitle: 'Generated Resume',
     coverTitle: 'Generated Cover Letter',
+    appLanguageLabel: 'Web page language',
+    resumeLanguageLabel: 'Resume language',
+    namePlaceholder: 'Name',
+    emailPlaceholder: 'Email',
+    passwordPlaceholder: 'Password',
+    profilePlaceholder: 'Paste resume text or JSON profile',
+    vacancyPlaceholder: 'Paste job posting text or URL',
+    registerBtn: 'Register',
+    loginBtn: 'Login',
+    logoutBtn: 'Logout',
+    uploadResume: 'Upload and Parse',
+    saveProfile: 'Save Profile',
+    importSample: 'Load Sample Profile',
+    importVacancy: 'Load Sample Vacancy',
+    analyze: 'Analyze Vacancy',
+    generate: 'Generate Resume',
+    compare: 'Compare (analysis + outputs)',
+    exportText: 'Export Text',
+    exportPdf: 'Export PDF',
+    interviewBtn: 'Generate Interview Prep',
+    quickStartTitle: 'Quick Start',
+    quickStartText: 'Load sample data, run analysis, and preview how your profile adapts to different markets.',
+    darkLabel: 'Dark',
+    lightLabel: 'Light',
     notLoggedIn: 'Not logged in',
     loggedInAs: 'Logged in as',
     needLogin: 'Please login first',
@@ -23,6 +49,7 @@ const i18n = {
     parseFail: 'Failed to parse resume'
   },
   RU: {
+    pageTitle: 'AI генератор резюме',
     authTitle: 'Авторизация',
     localeTitle: 'Локализация',
     profileTitle: 'Профиль карьеры',
@@ -34,6 +61,30 @@ const i18n = {
     analysisTitle: 'Анализ вакансии',
     resumeTitle: 'Сгенерированное резюме',
     coverTitle: 'Сгенерированное сопроводительное письмо',
+    appLanguageLabel: 'Язык интерфейса',
+    resumeLanguageLabel: 'Язык резюме',
+    namePlaceholder: 'Имя',
+    emailPlaceholder: 'Email',
+    passwordPlaceholder: 'Пароль',
+    profilePlaceholder: 'Вставьте текст резюме или JSON профиль',
+    vacancyPlaceholder: 'Вставьте текст вакансии или ссылку',
+    registerBtn: 'Регистрация',
+    loginBtn: 'Войти',
+    logoutBtn: 'Выйти',
+    uploadResume: 'Загрузить и разобрать',
+    saveProfile: 'Сохранить профиль',
+    importSample: 'Загрузить пример профиля',
+    importVacancy: 'Загрузить пример вакансии',
+    analyze: 'Анализировать вакансию',
+    generate: 'Сгенерировать резюме',
+    compare: 'Сравнить (анализ + результат)',
+    exportText: 'Экспорт в текст',
+    exportPdf: 'Экспорт в PDF',
+    interviewBtn: 'Сгенерировать подготовку к интервью',
+    quickStartTitle: 'Быстрый старт',
+    quickStartText: 'Загрузите пример данных, запустите анализ и посмотрите, как профиль адаптируется под рынки.',
+    darkLabel: 'Темная',
+    lightLabel: 'Светлая',
     notLoggedIn: 'Не выполнен вход',
     loggedInAs: 'Вход выполнен:',
     needLogin: 'Сначала выполните вход',
@@ -81,12 +132,68 @@ function applyAppLanguage() {
     ['compareTitle', 'compareTitle'],
     ['analysisTitle', 'analysisTitle'],
     ['resumeTitle', 'resumeTitle'],
-    ['coverTitle', 'coverTitle']
+    ['coverTitle', 'coverTitle'],
+    ['appLanguageLabel', 'appLanguageLabel'],
+    ['resumeLanguageLabel', 'resumeLanguageLabel']
   ]
   map.forEach(([id, key]) => {
     const el = document.getElementById(id)
     if (el) el.textContent = t(key)
   })
+
+  // Headline and supporting text
+  const h1 = document.querySelector('h1')
+  if (h1) h1.textContent = t('pageTitle')
+  const quickTitle = document.querySelector('.content-grid.two h3')
+  if (quickTitle) quickTitle.textContent = t('quickStartTitle')
+  const quickText = document.querySelector('.content-grid.two .muted')
+  if (quickText) quickText.textContent = t('quickStartText')
+
+  // Placeholders
+  const authName = document.getElementById('authName')
+  const authEmail = document.getElementById('authEmail')
+  const authPassword = document.getElementById('authPassword')
+  const profile = document.getElementById('profile')
+  const vacancy = document.getElementById('vacancy')
+  if (authName) authName.placeholder = t('namePlaceholder')
+  if (authEmail) authEmail.placeholder = t('emailPlaceholder')
+  if (authPassword) authPassword.placeholder = t('passwordPlaceholder')
+  if (profile) profile.placeholder = t('profilePlaceholder')
+  if (vacancy) vacancy.placeholder = t('vacancyPlaceholder')
+
+  // Button text
+  const buttonMap = [
+    ['registerBtn', 'registerBtn'],
+    ['loginBtn', 'loginBtn'],
+    ['logoutBtn', 'logoutBtn'],
+    ['uploadResume', 'uploadResume'],
+    ['saveProfile', 'saveProfile'],
+    ['importSample', 'importSample'],
+    ['importVacancy', 'importVacancy'],
+    ['analyze', 'analyze'],
+    ['generate', 'generate'],
+    ['compare', 'compare'],
+    ['exportText', 'exportText'],
+    ['exportPdf', 'exportPdf'],
+    ['interviewBtn', 'interviewBtn']
+  ]
+  buttonMap.forEach(([id, key]) => {
+    const el = document.getElementById(id)
+    if (el) el.textContent = t(key)
+  })
+
+  const themeToggle = document.getElementById('themeToggle')
+  if (themeToggle) {
+    themeToggle.textContent = theme === 'dark' ? t('lightLabel') : t('darkLabel')
+  }
+}
+
+function applyTheme() {
+  document.body.setAttribute('data-theme', theme)
+  const themeToggle = document.getElementById('themeToggle')
+  if (themeToggle) {
+    themeToggle.textContent = theme === 'dark' ? t('lightLabel') : t('darkLabel')
+  }
 }
 
 document.getElementById('registerBtn')?.addEventListener('click', async () => {
@@ -124,6 +231,12 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   localStorage.removeItem('authToken')
   localStorage.removeItem('userEmail')
   updateAuthStatus('')
+})
+
+document.getElementById('themeToggle')?.addEventListener('click', () => {
+  theme = theme === 'dark' ? 'light' : 'dark'
+  localStorage.setItem('theme', theme)
+  applyTheme()
 })
 
 document.getElementById('analyze').addEventListener('click', async () => {
@@ -262,5 +375,6 @@ document.getElementById('appLanguage')?.addEventListener('change', () => {
   updateAuthStatus()
 })
 
+applyTheme()
 applyAppLanguage()
 updateAuthStatus()

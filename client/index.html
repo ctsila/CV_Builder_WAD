@@ -4,56 +4,61 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>AI Resume Generator — MVP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="page-bg" aria-hidden="true"></div>
     <div class="container">
-      <h1>AI Resume Generator — MVP</h1>
-      <section>
-        <h2 id="authTitle">Authentication</h2>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+      <header class="topbar card">
+        <div>
+          <p class="eyebrow">Truthful AI Application Platform</p>
+          <h1>AI Resume Generator</h1>
+          <p class="subtitle">Tailored resumes and cover letters with No Lies Mode, locale controls, and explainable edits.</p>
+        </div>
+        <div class="topbar-actions">
+          <div class="field-inline">
+            <label id="appLanguageLabel" for="appLanguage">Web page language</label>
+            <select id="appLanguage">
+              <option value="EN">English</option>
+              <option value="RU">Russian</option>
+            </select>
+          </div>
+          <button id="themeToggle" class="btn ghost" type="button">Dark</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="section-head">
+          <h2 id="authTitle">Authentication</h2>
+          <span id="authStatus" class="status-pill">Not logged in</span>
+        </div>
+        <div class="form-grid auth-grid">
           <input id="authName" placeholder="Name" />
           <input id="authEmail" placeholder="Email" type="email" />
           <input id="authPassword" placeholder="Password" type="password" />
-          <button id="registerBtn">Register</button>
-          <button id="loginBtn">Login</button>
-          <button id="logoutBtn">Logout</button>
-          <span id="authStatus">Not logged in</span>
-        </div>
-      </section>
-
-      <section>
-        <h2 id="localeTitle">Localization</h2>
-        <div style="display:flex; gap:12px; align-items:center;">
-          <label id="appLanguageLabel" for="appLanguage">Web page language</label>
-          <select id="appLanguage">
-            <option value="EN">English</option>
-            <option value="RU">Russian</option>
-          </select>
-
-          <label id="resumeLanguageLabel" for="resumeLanguage">Resume language</label>
-          <select id="resumeLanguage">
-            <option value="EN">English</option>
-            <option value="RU">Russian</option>
-          </select>
-        </div>
-      </section>
-
-      <section>
-        <h2 id="profileTitle">Master Profile</h2>
-        <div style="display:flex; gap:12px; align-items:flex-start;">
-          <div style="flex:1">
-            <label id="uploadLabel">Upload resume (PDF or DOCX):</label>
-            <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,text/plain" />
-            <button id="uploadResume">Upload and Parse</button>
-            <div style="margin-top:8px">
-              <label id="pasteLabel">Or paste your resume text:</label>
-              <textarea id="profile" placeholder='Paste resume text or JSON profile'></textarea>
-              <button id="saveProfile">Save Profile</button>
-            </div>
+          <div class="button-row">
+            <button id="registerBtn" class="btn" type="button">Register</button>
+            <button id="loginBtn" class="btn primary" type="button">Login</button>
+            <button id="logoutBtn" class="btn ghost" type="button">Logout</button>
           </div>
-          <div style="width:220px">
-            <label id="regionLabel">Target country/region</label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 id="localeTitle">Localization</h2>
+        <div class="form-grid locale-grid">
+          <div>
+            <label id="resumeLanguageLabel" for="resumeLanguage">Resume language</label>
+            <select id="resumeLanguage">
+              <option value="EN">English</option>
+              <option value="RU">Russian</option>
+            </select>
+          </div>
+          <div>
+            <label id="regionLabel" for="region">Target country/region</label>
             <select id="region">
               <option value="US">United States</option>
               <option value="UK">United Kingdom</option>
@@ -63,42 +68,68 @@
               <option value="UAE">UAE</option>
               <option value="GLOBAL">Global</option>
             </select>
-            <div style="margin-top:12px">
-              <button id="importSample">Load Sample Profile</button>
-              <button id="importVacancy">Load Sample Vacancy</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 id="profileTitle">Master Profile</h2>
+        <div class="content-grid two">
+          <div>
+            <label id="uploadLabel">Upload resume (PDF or DOCX):</label>
+            <div class="upload-row">
+              <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,text/plain" />
+              <button id="uploadResume" class="btn" type="button">Upload and Parse</button>
+            </div>
+            <div class="mt-12">
+              <label id="pasteLabel">Or paste your resume text:</label>
+              <textarea id="profile" placeholder='Paste resume text or JSON profile'></textarea>
+              <div class="button-row">
+                <button id="saveProfile" class="btn primary" type="button">Save Profile</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>Quick Start</h3>
+            <p class="muted">Load sample data, run analysis, and preview how your profile adapts to different markets.</p>
+            <div class="stack-buttons">
+              <button id="importSample" class="btn ghost" type="button">Load Sample Profile</button>
+              <button id="importVacancy" class="btn ghost" type="button">Load Sample Vacancy</button>
             </div>
           </div>
         </div>
       </section>
 
-      <section>
+      <section class="card">
         <h2 id="vacancyTitle">Vacancy Text</h2>
         <textarea id="vacancy" placeholder="Paste job posting text or URL"></textarea>
-        <button id="analyze">Analyze Vacancy</button>
+        <div class="button-row">
+          <button id="analyze" class="btn" type="button">Analyze Vacancy</button>
+        </div>
       </section>
 
-      <section>
+      <section class="card">
         <h2 id="compareTitle">Compare and Generated Outputs</h2>
-        <div style="display:flex; gap:12px; align-items:flex-start;">
-          <div style="flex:1">
+        <div class="content-grid three">
+          <div class="output-panel">
             <h3 id="analysisTitle">Job Analysis</h3>
             <pre id="analysis" style="min-height:120px"></pre>
           </div>
-          <div style="flex:1">
+          <div class="output-panel">
             <h3 id="resumeTitle">Generated Resume</h3>
             <pre id="result"></pre>
           </div>
-          <div style="flex:1">
+          <div class="output-panel">
             <h3 id="coverTitle">Generated Cover Letter</h3>
             <pre id="cover"></pre>
           </div>
         </div>
-        <div style="margin-top:8px">
-          <button id="generate">Generate Resume</button>
-          <button id="compare">Compare (analysis + outputs)</button>
-          <button id="exportText">Export Text</button>
-          <button id="exportPdf">Export PDF</button>
-          <button id="interviewBtn">Generate Interview Prep</button>
+        <div class="button-row wrap mt-12">
+          <button id="generate" class="btn primary" type="button">Generate Resume</button>
+          <button id="compare" class="btn" type="button">Compare (analysis + outputs)</button>
+          <button id="exportText" class="btn ghost" type="button">Export Text</button>
+          <button id="exportPdf" class="btn ghost" type="button">Export PDF</button>
+          <button id="interviewBtn" class="btn" type="button">Generate Interview Prep</button>
         </div>
       </section>
     </div>
