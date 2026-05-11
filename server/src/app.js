@@ -57,6 +57,22 @@ async function main() {
     res.json(out)
   })
 
+  app.post('/api/compare', (req, res) => {
+    const { profile, vacancyText, tone } = req.body
+    const analysis = generator.analyzeVacancy(vacancyText)
+    const gen = generator.generateResume(profile, analysis)
+    const cover = generator.generateCoverLetter(profile, vacancyText, analysis, tone)
+    // Compose a simple compare response including ATS match and risk flags
+    res.json({ analysis, resume: gen.resume, coverLetter: cover.letter, atsMatch: gen.atsMatch, riskFlags: gen.riskFlags, strengths: gen.strengths })
+  })
+
+  app.get('/api/validate', (req, res) => {
+    // Basic health + validation checks
+    const ok = true
+    const details = { db: !!db, serverTime: new Date().toISOString() }
+    res.json({ ok, details })
+  })
+
   app.post('/api/export/text', (req, res) => {
     const { resume } = req.body
     const text = []
@@ -72,8 +88,21 @@ async function main() {
     res.send(text.join('\n'))
   })
 
-  // static client serve (optional)
-  app.use('/client', express.static(path.join(__dirname, '..', 'client')))
+  // Serve client SPA at root and keep /client as alias
+  const clientDir = path.join(__dirname, '..', 'client')
+  app.use(express.static(clientDir))
+  app.use('/client', express.static(clientDir))
+
+  // Basic API root for quick health and instructions
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(clientDir, 'index.html'))
+  })
+
+  // Fallback: API 404s return JSON, non-API routes return SPA index (SPA routing)
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) return res.status(404).json({ error: 'not found' })
+    res.sendFile(path.join(clientDir, 'index.html'))
+  })
 
   const port = process.env.PORT || 4000
   app.listen(port, () => console.log(`API listening on http://localhost:${port}`))

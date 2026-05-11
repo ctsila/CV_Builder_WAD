@@ -1,0 +1,9 @@
+Senior Backend Engineer
+
+Responsibilities:
+- Build and maintain scalable backend services using Node.js, Docker, and AWS.
+- Design APIs and data models, ensure high performance and reliability.
+
+Requirements: Node.js, Docker, AWS, SQL, experience with microservices. Senior level preferred.
+
+Nice to have: Kubernetes, GraphQL, CI/CD experience.

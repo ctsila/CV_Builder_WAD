@@ -24,6 +24,20 @@ document.getElementById('generate').addEventListener('click', async () => {
   document.getElementById('result').textContent = JSON.stringify(j, null, 2)
 })
 
+document.getElementById('compare').addEventListener('click', async () => {
+  let profile
+  try { profile = JSON.parse(document.getElementById('profile').value) } catch(e){ alert('Invalid JSON'); return }
+  const vacancyText = document.getElementById('vacancy').value
+  const res = await fetch(apiBase + '/api/compare', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ profile, vacancyText, tone: 'concise' }) })
+  const j = await res.json()
+  document.getElementById('analysis').textContent = JSON.stringify(j.analysis, null, 2)
+  document.getElementById('result').textContent = JSON.stringify(j.resume, null, 2)
+  document.getElementById('cover').textContent = j.coverLetter
+  if (j.atsMatch !== undefined) {
+    document.getElementById('analysis').textContent += `\n\nATS Match: ${j.atsMatch}%\nRisk Flags: ${JSON.stringify(j.riskFlags || [])}`
+  }
+})
+
 document.getElementById('exportText').addEventListener('click', async () => {
   let profile
   try { profile = JSON.parse(document.getElementById('profile').value) } catch(e){ alert('Invalid JSON'); return }

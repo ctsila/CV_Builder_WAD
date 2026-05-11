@@ -16,7 +16,14 @@ npm install
 npm start
 ```
 
-2. Open the client UI (served as static files) in a browser: open `client/index.html` directly or use a static server.
+2. Open the client UI in a browser after starting the API server:
+
+```bash
+# with server started (see step 1), open:
+http://localhost:4000/
+```
+
+Note: The API now serves the client SPA at the root path.
 
 Notes:
 - This is an initial MVP scaffold implementing the required data model, a deterministic generation engine that only uses user-provided facts, persistence, basic exports, and a simple UI.

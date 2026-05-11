@@ -1,0 +1,22 @@
+{
+  "fullName": "Alex Example",
+  "contact": { "email": "alex@example.com", "phone": "+1-555-0100", "title": "Software Engineer" },
+  "skills": ["JavaScript", "Node", "React", "AWS", "Docker"],
+  "experiences": [
+    {
+      "company": "ExampleCorp",
+      "title": "Software Engineer",
+      "start": "2020-06",
+      "end": "2023-04",
+      "bullets": [
+        "Built and maintained Node.js services with AWS Lambda and API Gateway.",
+        "Led migration from monolith to microservices using Docker and ECS.",
+        "Improved API latency by 35% through caching and query optimization."
+      ]
+    }
+  ],
+  "education": [],
+  "projects": [],
+  "certifications": [],
+  "languages": ["English"]
+}

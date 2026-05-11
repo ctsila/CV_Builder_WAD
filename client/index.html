@@ -22,10 +22,26 @@
       </section>
 
       <section>
-        <h2>Generated Resume</h2>
-        <pre id="result"></pre>
-        <button id="generate">Generate Resume</button>
-        <button id="exportText">Export Text</button>
+        <h2>Compare & Generated Outputs</h2>
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="flex:1">
+            <h3>Job Analysis</h3>
+            <pre id="analysis" style="min-height:120px"></pre>
+          </div>
+          <div style="flex:1">
+            <h3>Generated Resume</h3>
+            <pre id="result"></pre>
+          </div>
+          <div style="flex:1">
+            <h3>Generated Cover Letter</h3>
+            <pre id="cover"></pre>
+          </div>
+        </div>
+        <div style="margin-top:8px">
+          <button id="generate">Generate Resume</button>
+          <button id="compare">Compare (analysis + outputs)</button>
+          <button id="exportText">Export Text</button>
+        </div>
       </section>
     </div>
     <script src="main.js"></script>
