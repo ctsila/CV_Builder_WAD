@@ -89,16 +89,26 @@ function generateResume(profile, vacancyAnalysis, options = {}) {
   }
 
   const region = (options.region || 'GLOBAL').toUpperCase()
+  const language = (options.language || 'EN').toUpperCase()
   if (strengths.length) {
     resume.summary = `${profile.contact && profile.contact.title ? profile.contact.title + ' ' : ''}${profile.fullName} — experience with ${strengths.slice(0,4).map(s => s.skill).join(', ')}. Evidence-backed and focused on ${vacancyAnalysis.domainKeywords.join(', ')}`
   } else {
     resume.summary = `Master career profile for ${profile.fullName}.`;
+  }
+  if (language === 'RU') {
+    if (strengths.length) {
+      resume.summary = `${profile.fullName} — опыт в ${strengths.slice(0,4).map(s => s.skill).join(', ')}. Формулировки основаны на подтвержденных фактах.`
+    } else {
+      resume.summary = `Базовый карьерный профиль для ${profile.fullName}.`
+    }
   }
   // Region-specific formatting hints (simple)
   if (region === 'DE' || region === 'EU') {
     resume.format = { includePhoto: false, length: '2-pages-preferred', tone: 'formal' }
   } else if (region === 'UK') {
     resume.format = { includePhoto: false, length: '2-pages', tone: 'concise' }
+  } else if (region === 'RU_CIS') {
+    resume.format = { includePhoto: false, length: '1-2-pages', tone: 'formal-pragmatic' }
   } else if (region === 'US') {
     resume.format = { includePhoto: false, length: '1-page-preferred', tone: 'ats-friendly' }
   } else {
@@ -122,7 +132,7 @@ function generateResume(profile, vacancyAnalysis, options = {}) {
   return { resume, strengths, missing, evidenceMap, riskFlags, atsMatch }
 }
 
-function generateCoverLetter(profile, vacancyText, vacancyAnalysis, tone = 'concise', region='GLOBAL') {
+function generateCoverLetter(profile, vacancyText, vacancyAnalysis, tone = 'concise', region='GLOBAL', language='EN') {
   const greeting = `Dear Hiring Manager,`;
   const intro = `I am ${profile.fullName}. I am applying for this role because my experience with ${ (profile.skills||[]).slice(0,5).join(', ') } aligns with your requirements.`
   const bodyLines = []
@@ -138,7 +148,14 @@ function generateCoverLetter(profile, vacancyText, vacancyAnalysis, tone = 'conc
   let salutation = greeting
   if (region === 'DE') salutation = 'Sehr geehrte Damen und Herren,'
   else if (region === 'UK') salutation = 'Dear Hiring Team,'
-  const letter = [salutation, intro, bodyLines.join('\n'), closer].filter(Boolean).join('\n\n')
+  let localizedIntro = intro
+  let localizedCloser = closer
+  if ((language || '').toUpperCase() === 'RU') {
+    salutation = 'Уважаемый менеджер по найму,'
+    localizedIntro = `Меня зовут ${profile.fullName}. Я подаюсь на эту вакансию, потому что мой опыт в ${ (profile.skills||[]).slice(0,5).join(', ') } соответствует требованиям роли.`
+    localizedCloser = `С уважением,\n${profile.fullName}`
+  }
+  const letter = [salutation, localizedIntro, bodyLines.join('\n'), localizedCloser].filter(Boolean).join('\n\n')
   return { letter }
 }
 

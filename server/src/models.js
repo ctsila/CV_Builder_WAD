@@ -26,4 +26,4 @@ function createProfile({ userId, fullName, contact, experiences = [], education 
   }
 }
 
-module.exports = { createUser, createProfile }
+module.exports = { createUser, createAuthUser, createProfile }

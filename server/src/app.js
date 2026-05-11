@@ -10,6 +10,19 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json({ limit: '1mb' }))
 
+function authRequired(req, res, next) {
+  const auth = req.headers.authorization || ''
+  if (!auth.startsWith('Bearer ')) return res.status(401).json({ error: 'auth_required' })
+  const token = auth.slice('Bearer '.length)
+  try {
+    const jwt = require('jsonwebtoken')
+    req.user = jwt.verify(token, process.env.JWT_SECRET || 'dev_secret')
+    next()
+  } catch (e) {
+    return res.status(401).json({ error: 'invalid_token' })
+  }
+}
+
 async function main() {
   await init()
 
@@ -42,17 +55,18 @@ async function main() {
     res.json({ token, user: { id: user.id, email: user.email, name: user.name } })
   })
 
-  app.post('/api/profile', async (req, res) => {
+  app.post('/api/profile', authRequired, async (req, res) => {
     const data = req.body
-    const profile = createProfile(data)
+    const profile = createProfile({ ...data, userId: req.user.sub })
     db.data.profiles.push(profile)
     await db.write()
     res.json({ profile })
   })
 
-  app.get('/api/profile/:id', (req, res) => {
+  app.get('/api/profile/:id', authRequired, (req, res) => {
     const p = db.data.profiles.find(x => x.id === req.params.id)
     if (!p) return res.status(404).json({ error: 'not found' })
+    if (p.userId && p.userId !== req.user.sub) return res.status(403).json({ error: 'forbidden' })
     res.json({ profile: p })
   })
 
@@ -66,7 +80,7 @@ async function main() {
   const multer = require('multer')
   const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } })
 
-  app.post('/api/upload/resume', upload.single('file'), async (req, res) => {
+  app.post('/api/upload/resume', authRequired, upload.single('file'), async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ error: 'no file' })
       const parsed = await generator.parseResumeBuffer(req.file)
@@ -77,31 +91,31 @@ async function main() {
     }
   })
 
-  app.post('/api/generate/resume', (req, res) => {
-    const { profile, vacancyText, region } = req.body
+  app.post('/api/generate/resume', authRequired, (req, res) => {
+    const { profile, vacancyText, region, language } = req.body
     const analysis = generator.analyzeVacancy(vacancyText)
-    const out = generator.generateResume(profile, analysis, { region })
+    const out = generator.generateResume(profile, analysis, { region, language })
     res.json(out)
   })
 
-  app.post('/api/generate/cover-letter', (req, res) => {
-    const { profile, vacancyText, tone, region } = req.body
+  app.post('/api/generate/cover-letter', authRequired, (req, res) => {
+    const { profile, vacancyText, tone, region, language } = req.body
     const analysis = generator.analyzeVacancy(vacancyText)
-    const out = generator.generateCoverLetter(profile, vacancyText, analysis, tone, region)
+    const out = generator.generateCoverLetter(profile, vacancyText, analysis, tone, region, language)
     res.json(out)
   })
 
-  app.post('/api/compare', (req, res) => {
-    const { profile, vacancyText, tone } = req.body
+  app.post('/api/compare', authRequired, (req, res) => {
+    const { profile, vacancyText, tone, region, language } = req.body
     const analysis = generator.analyzeVacancy(vacancyText)
-    const gen = generator.generateResume(profile, analysis)
-    const cover = generator.generateCoverLetter(profile, vacancyText, analysis, tone)
+    const gen = generator.generateResume(profile, analysis, { region, language })
+    const cover = generator.generateCoverLetter(profile, vacancyText, analysis, tone, region, language)
     // Compose a simple compare response including ATS match and risk flags
     res.json({ analysis, resume: gen.resume, coverLetter: cover.letter, atsMatch: gen.atsMatch, riskFlags: gen.riskFlags, strengths: gen.strengths })
   })
 
   // Export resume as PDF
-  app.post('/api/export/pdf', async (req, res) => {
+  app.post('/api/export/pdf', authRequired, async (req, res) => {
     try {
       const PDFDocument = require('pdfkit')
       const { resume } = req.body
@@ -145,7 +159,7 @@ async function main() {
   })
 
   // Interview prep generator (simple heuristics)
-  app.post('/api/interview', (req, res) => {
+  app.post('/api/interview', authRequired, (req, res) => {
     const { profile, vacancyText } = req.body
     const analysis = generator.analyzeVacancy(vacancyText)
     const questions = []
@@ -156,7 +170,7 @@ async function main() {
     res.json({ questions })
   })
 
-  app.post('/api/export/text', (req, res) => {
+  app.post('/api/export/text', authRequired, (req, res) => {
     const { resume } = req.body
     const text = []
     text.push(resume.header.name)

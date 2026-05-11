@@ -10,25 +10,56 @@
     <div class="container">
       <h1>AI Resume Generator — MVP</h1>
       <section>
-        <h2>Master Profile</h2>
+        <h2 id="authTitle">Authentication</h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <input id="authName" placeholder="Name" />
+          <input id="authEmail" placeholder="Email" type="email" />
+          <input id="authPassword" placeholder="Password" type="password" />
+          <button id="registerBtn">Register</button>
+          <button id="loginBtn">Login</button>
+          <button id="logoutBtn">Logout</button>
+          <span id="authStatus">Not logged in</span>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="localeTitle">Localization</h2>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <label id="appLanguageLabel" for="appLanguage">Web page language</label>
+          <select id="appLanguage">
+            <option value="EN">English</option>
+            <option value="RU">Russian</option>
+          </select>
+
+          <label id="resumeLanguageLabel" for="resumeLanguage">Resume language</label>
+          <select id="resumeLanguage">
+            <option value="EN">English</option>
+            <option value="RU">Russian</option>
+          </select>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="profileTitle">Master Profile</h2>
         <div style="display:flex; gap:12px; align-items:flex-start;">
           <div style="flex:1">
-            <label>Upload resume (PDF or DOCX):</label>
+            <label id="uploadLabel">Upload resume (PDF or DOCX):</label>
             <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,text/plain" />
-            <button id="uploadResume">Upload & Parse</button>
+            <button id="uploadResume">Upload and Parse</button>
             <div style="margin-top:8px">
-              <label>Or paste your resume text:</label>
+              <label id="pasteLabel">Or paste your resume text:</label>
               <textarea id="profile" placeholder='Paste resume text or JSON profile'></textarea>
               <button id="saveProfile">Save Profile</button>
             </div>
           </div>
           <div style="width:220px">
-            <label>Target country/region</label>
+            <label id="regionLabel">Target country/region</label>
             <select id="region">
               <option value="US">United States</option>
               <option value="UK">United Kingdom</option>
               <option value="EU">Europe</option>
               <option value="DE">Germany</option>
+              <option value="RU_CIS">Russia / CIS</option>
               <option value="UAE">UAE</option>
               <option value="GLOBAL">Global</option>
             </select>
@@ -41,24 +72,24 @@
       </section>
 
       <section>
-        <h2>Vacancy Text</h2>
+        <h2 id="vacancyTitle">Vacancy Text</h2>
         <textarea id="vacancy" placeholder="Paste job posting text or URL"></textarea>
         <button id="analyze">Analyze Vacancy</button>
       </section>
 
       <section>
-        <h2>Compare & Generated Outputs</h2>
+        <h2 id="compareTitle">Compare and Generated Outputs</h2>
         <div style="display:flex; gap:12px; align-items:flex-start;">
           <div style="flex:1">
-            <h3>Job Analysis</h3>
+            <h3 id="analysisTitle">Job Analysis</h3>
             <pre id="analysis" style="min-height:120px"></pre>
           </div>
           <div style="flex:1">
-            <h3>Generated Resume</h3>
+            <h3 id="resumeTitle">Generated Resume</h3>
             <pre id="result"></pre>
           </div>
           <div style="flex:1">
-            <h3>Generated Cover Letter</h3>
+            <h3 id="coverTitle">Generated Cover Letter</h3>
             <pre id="cover"></pre>
           </div>
         </div>

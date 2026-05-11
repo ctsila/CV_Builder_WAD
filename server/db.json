@@ -1,6 +1,60 @@
 {
-  "users": [],
-  "profiles": [],
+  "users": [
+    {
+      "id": "d_qfC1k7EbTHPZQnPoTaL",
+      "email": "test2@example.com",
+      "name": "Test User",
+      "passwordHash": "$2a$10$tzI7yHWQjW.Gp4skR0FyRe4UPFNFde.jB.lAWijOOvCliJneCnV0W",
+      "createdAt": "2026-05-11T13:05:57.423Z"
+    },
+    {
+      "id": "goR00OsvIFz6V1bZaIekR",
+      "email": "test3@example.com",
+      "name": "Test User",
+      "passwordHash": "$2a$10$sDLSB2rATXQdYngaGvp3vu.nRKCGAyTnFCrk0GpvIJiKeCeTbilay",
+      "createdAt": "2026-05-11T13:06:04.725Z"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "6sPsYDjCQKiNlso7Xcsy3",
+      "userId": "d_qfC1k7EbTHPZQnPoTaL",
+      "fullName": "Test User",
+      "contact": {
+        "email": "test2@example.com"
+      },
+      "experiences": [],
+      "education": [],
+      "skills": [
+        "node"
+      ],
+      "projects": [],
+      "certifications": [],
+      "languages": [],
+      "evidence": [],
+      "createdAt": "2026-05-11T13:05:57.652Z",
+      "updatedAt": "2026-05-11T13:05:57.652Z"
+    },
+    {
+      "id": "ril6L7fiAoOxVZNJHX9Oz",
+      "userId": "goR00OsvIFz6V1bZaIekR",
+      "fullName": "Test User",
+      "contact": {
+        "email": "test3@example.com"
+      },
+      "experiences": [],
+      "education": [],
+      "skills": [
+        "node"
+      ],
+      "projects": [],
+      "certifications": [],
+      "languages": [],
+      "evidence": [],
+      "createdAt": "2026-05-11T13:06:04.834Z",
+      "updatedAt": "2026-05-11T13:06:04.834Z"
+    }
+  ],
   "applications": [],
   "companies": []
 }
