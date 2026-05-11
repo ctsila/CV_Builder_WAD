@@ -2,11 +2,13 @@ const apiBase = 'http://localhost:4000'
 
 let authToken = localStorage.getItem('authToken') || ''
 let theme = localStorage.getItem('theme') || 'light'
-let currentView = 'builder'
+let currentView = 'landing'
 
 const i18n = {
   EN: {
     pageTitle: 'AI Resume Generator',
+    landingTitle: 'Truthful AI application workflow for modern job seekers',
+    landingText: 'Build a master career profile, tailor resumes and cover letters for each vacancy, and keep a history of every upload, query, and generated version. No fake claims. No hidden automation. Just explainable, market-aware job documents.',
     authTitle: 'Authentication',
     localeTitle: 'Localization',
     profileTitle: 'Master Profile',
@@ -58,6 +60,8 @@ const i18n = {
   },
   RU: {
     pageTitle: 'AI генератор резюме',
+    landingTitle: 'Прозрачный AI-процесс для современного поиска работы',
+    landingText: 'Создайте мастер-профиль карьеры, адаптируйте резюме и сопроводительные письма под каждую вакансию и сохраняйте историю загрузок, запросов и сгенерированных версий. Без фейковых фактов. Без скрытой магии. Только объяснимые и контекстные документы.',
     authTitle: 'Авторизация',
     localeTitle: 'Локализация',
     profileTitle: 'Профиль карьеры',
@@ -122,12 +126,17 @@ function authHeaders(extra = {}) {
 
 function setView(view) {
   currentView = view
+  const landingView = document.getElementById('landingView')
+  const accountView = document.getElementById('accountView')
   const builderView = document.getElementById('builderView')
   const historyView = document.getElementById('historyView')
   const builderTab = document.getElementById('builderTab')
   const historyTab = document.getElementById('historyTab')
-  if (builderView) builderView.classList.toggle('hidden', view !== 'builder')
-  if (historyView) historyView.classList.toggle('hidden', view !== 'history')
+  const isLanding = view === 'landing'
+  if (landingView) landingView.classList.toggle('hidden', !isLanding)
+  if (accountView) accountView.classList.toggle('hidden', isLanding)
+  if (builderView) builderView.classList.toggle('hidden', isLanding || view !== 'builder')
+  if (historyView) historyView.classList.toggle('hidden', isLanding || view !== 'history')
   if (builderTab) builderTab.classList.toggle('active', view === 'builder')
   if (historyTab) historyTab.classList.toggle('active', view === 'history')
   if (view === 'history') loadHistory()
@@ -140,8 +149,6 @@ function setWorkflowEnabled(enabled) {
     if (!el) return
     if ('disabled' in el) el.disabled = !enabled
   })
-  const loginPrompt = document.getElementById('loginPrompt')
-  if (loginPrompt) loginPrompt.classList.toggle('hidden', enabled)
 }
 
 async function loadHistory() {
@@ -193,6 +200,10 @@ function updateAuthStatus(userEmail = '') {
   if (!el) return
   if (authToken) el.textContent = `${t('loggedInAs')} ${userEmail || localStorage.getItem('userEmail') || ''}`
   else el.textContent = t('notLoggedIn')
+  const accountStatus = document.getElementById('accountStatus')
+  if (accountStatus) {
+    accountStatus.textContent = authToken ? `${t('loggedInAs')} ${userEmail || localStorage.getItem('userEmail') || ''}` : t('notLoggedIn')
+  }
   setWorkflowEnabled(!!authToken)
 }
 
@@ -220,9 +231,13 @@ function applyAppLanguage() {
   // Headline and supporting text
   const h1 = document.querySelector('h1')
   if (h1) h1.textContent = t('pageTitle')
-  const quickTitle = document.querySelector('.content-grid.two h3')
+  const landingTitle = document.querySelector('.landing-title')
+  const landingText = document.querySelector('.landing-text')
+  if (landingTitle) landingTitle.textContent = t('landingTitle')
+  if (landingText) landingText.textContent = t('landingText')
+  const quickTitle = document.getElementById('quickStartTitle')
   if (quickTitle) quickTitle.textContent = t('quickStartTitle')
-  const quickText = document.querySelector('.content-grid.two .muted')
+  const quickText = document.getElementById('quickStartText')
   if (quickText) quickText.textContent = t('quickStartText')
 
   // Placeholders
@@ -275,13 +290,6 @@ function applyAppLanguage() {
   if (historyEmpty && !authToken) historyEmpty.textContent = t('needLogin')
   const currentHistoryList = document.getElementById('historyList')
   if (currentHistoryList && currentView === 'history' && authToken) loadHistory()
-  const loginPrompt = document.getElementById('loginPrompt')
-  if (loginPrompt) {
-    const promptTitle = loginPrompt.querySelector('h2')
-    const promptText = loginPrompt.querySelector('.muted')
-    if (promptTitle) promptTitle.textContent = t('loginRequiredTitle')
-    if (promptText) promptText.textContent = t('loginRequiredText')
-  }
 }
 
 function applyTheme() {
@@ -320,8 +328,7 @@ document.getElementById('loginBtn')?.addEventListener('click', async () => {
   localStorage.setItem('authToken', authToken)
   localStorage.setItem('userEmail', j.user.email)
   updateAuthStatus(j.user.email)
-  setView(currentView)
-  if (currentView === 'history') loadHistory()
+  setView('builder')
 })
 
 document.getElementById('logoutBtn')?.addEventListener('click', () => {
@@ -329,7 +336,9 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   localStorage.removeItem('authToken')
   localStorage.removeItem('userEmail')
   updateAuthStatus('')
-  document.getElementById('historyList') && (document.getElementById('historyList').innerHTML = `<div class="history-empty">${t('needLogin')}</div>`)
+  const historyList = document.getElementById('historyList')
+  if (historyList) historyList.innerHTML = `<div class="history-empty">${t('needLogin')}</div>`
+  setView('landing')
 })
 
 document.getElementById('themeToggle')?.addEventListener('click', () => {
@@ -481,4 +490,4 @@ document.getElementById('appLanguage')?.addEventListener('change', () => {
 applyTheme()
 applyAppLanguage()
 updateAuthStatus()
-setView('builder')
+setView(authToken ? 'builder' : 'landing')

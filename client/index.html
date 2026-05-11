@@ -30,130 +30,150 @@
         </div>
       </header>
 
-      <nav class="card tabs-bar" aria-label="Main navigation">
-        <button id="builderTab" class="tab-btn active" type="button">Builder</button>
-        <button id="historyTab" class="tab-btn" type="button">History</button>
-      </nav>
-
-      <section id="loginPrompt" class="card login-gate">
-        <div>
-          <h2>Login required</h2>
-          <p class="muted">Register or log in above to unlock uploads, generation, exports, and history.</p>
-        </div>
-      </section>
-
-      <section class="card" id="builderView">
-        <div class="section-head">
-          <h2 id="authTitle">Authentication</h2>
-          <span id="authStatus" class="status-pill">Not logged in</span>
-        </div>
-        <div class="form-grid auth-grid">
-          <input id="authName" placeholder="Name" />
-          <input id="authEmail" placeholder="Email" type="email" />
-          <input id="authPassword" placeholder="Password" type="password" />
-          <div class="button-row">
-            <button id="registerBtn" class="btn" type="button">Register</button>
-            <button id="loginBtn" class="btn primary" type="button">Login</button>
-            <button id="logoutBtn" class="btn ghost" type="button">Logout</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2 id="localeTitle">Localization</h2>
-        <div class="form-grid locale-grid">
-          <div>
-            <label id="resumeLanguageLabel" for="resumeLanguage">Resume language</label>
-            <select id="resumeLanguage">
-              <option value="EN">English</option>
-              <option value="RU">Russian</option>
-            </select>
-          </div>
-          <div>
-            <label id="regionLabel" for="region">Target country/region</label>
-            <select id="region">
-              <option value="US">United States</option>
-              <option value="UK">United Kingdom</option>
-              <option value="EU">Europe</option>
-              <option value="DE">Germany</option>
-              <option value="RU_CIS">Russia / CIS</option>
-              <option value="UAE">UAE</option>
-              <option value="GLOBAL">Global</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2 id="profileTitle">Master Profile</h2>
-        <div class="content-grid two">
-          <div>
-            <label id="uploadLabel">Upload resume (PDF or DOCX):</label>
-            <div class="upload-row">
-              <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,text/plain" />
-              <button id="uploadResume" class="btn" type="button">Upload and Parse</button>
+      <section id="landingView" class="landing-shell card">
+        <div class="landing-grid">
+          <div class="landing-copy">
+            <h2 class="landing-title">Truthful AI application workflow for modern job seekers</h2>
+            <p class="landing-text">Build a master career profile, tailor resumes and cover letters for each vacancy, and keep a history of every upload, query, and generated version. No fake claims. No hidden automation. Just explainable, market-aware job documents.</p>
+            <div class="landing-badges">
+              <span class="badge">Login first</span>
+              <span class="badge">History included</span>
+              <span class="badge">Upload CVs</span>
+              <span class="badge">ATS-aware</span>
             </div>
-            <div class="mt-12">
-              <label id="pasteLabel">Or paste your resume text:</label>
-              <textarea id="profile" placeholder='Paste resume text or JSON profile'></textarea>
+          </div>
+          <div class="card auth-card">
+            <div class="section-head">
+              <h2 id="authTitle">Authentication</h2>
+              <span id="authStatus" class="status-pill">Not logged in</span>
+            </div>
+            <div class="form-grid auth-grid">
+              <input id="authName" placeholder="Name" />
+              <input id="authEmail" placeholder="Email" type="email" />
+              <input id="authPassword" placeholder="Password" type="password" />
               <div class="button-row">
-                <button id="saveProfile" class="btn primary" type="button">Save Profile</button>
+                <button id="registerBtn" class="btn" type="button">Register</button>
+                <button id="loginBtn" class="btn primary" type="button">Login</button>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="accountView" class="account-shell hidden">
+        <div class="card account-header">
           <div>
-            <h3>Quick Start</h3>
-            <p class="muted">Load sample data, run analysis, and preview how your profile adapts to different markets.</p>
-            <div class="stack-buttons">
-              <button id="importSample" class="btn ghost" type="button">Load Sample Profile</button>
-              <button id="importVacancy" class="btn ghost" type="button">Load Sample Vacancy</button>
+            <p class="eyebrow">Your Account</p>
+            <h2>Application workspace</h2>
+            <p class="muted">Upload a CV, run analysis, generate versions, and review everything in one place.</p>
+          </div>
+          <div class="account-actions">
+            <span id="accountStatus" class="status-pill">Signed in</span>
+            <button id="logoutBtn" class="btn ghost" type="button">Logout</button>
+          </div>
+        </div>
+
+        <nav class="card tabs-bar" aria-label="Main navigation">
+          <button id="builderTab" class="tab-btn active" type="button">Builder</button>
+          <button id="historyTab" class="tab-btn" type="button">History</button>
+        </nav>
+
+        <section class="card" id="builderView">
+          <h2 id="localeTitle">Localization</h2>
+          <div class="form-grid locale-grid">
+            <div>
+              <label id="resumeLanguageLabel" for="resumeLanguage">Resume language</label>
+              <select id="resumeLanguage">
+                <option value="EN">English</option>
+                <option value="RU">Russian</option>
+              </select>
+            </div>
+            <div>
+              <label id="regionLabel" for="region">Target country/region</label>
+              <select id="region">
+                <option value="US">United States</option>
+                <option value="UK">United Kingdom</option>
+                <option value="EU">Europe</option>
+                <option value="DE">Germany</option>
+                <option value="RU_CIS">Russia / CIS</option>
+                <option value="UAE">UAE</option>
+                <option value="GLOBAL">Global</option>
+              </select>
             </div>
           </div>
-        </div>
-      </section>
 
-      <section class="card">
-        <h2 id="vacancyTitle">Vacancy Text</h2>
-        <textarea id="vacancy" placeholder="Paste job posting text or URL"></textarea>
-        <div class="button-row">
-          <button id="analyze" class="btn" type="button">Analyze Vacancy</button>
-        </div>
-      </section>
+          <section class="mini-card">
+            <h2 id="profileTitle">Master Profile</h2>
+            <div class="content-grid two">
+              <div>
+                <label id="uploadLabel">Upload resume (PDF or DOCX):</label>
+                <div class="upload-row">
+                  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,text/plain" />
+                  <button id="uploadResume" class="btn" type="button">Upload and Parse</button>
+                </div>
+                <div class="mt-12">
+                  <label id="pasteLabel">Or paste your resume text:</label>
+                  <textarea id="profile" placeholder='Paste resume text or JSON profile'></textarea>
+                  <div class="button-row">
+                    <button id="saveProfile" class="btn primary" type="button">Save Profile</button>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 id="quickStartTitle">Quick Start</h3>
+                <p class="muted" id="quickStartText">Load sample data, run analysis, and preview how your profile adapts to different markets.</p>
+                <div class="stack-buttons">
+                  <button id="importSample" class="btn ghost" type="button">Load Sample Profile</button>
+                  <button id="importVacancy" class="btn ghost" type="button">Load Sample Vacancy</button>
+                </div>
+              </div>
+            </div>
+          </section>
 
-      <section class="card">
-        <h2 id="compareTitle">Compare and Generated Outputs</h2>
-        <div class="content-grid three">
-          <div class="output-panel">
-            <h3 id="analysisTitle">Job Analysis</h3>
-            <pre id="analysis" style="min-height:120px"></pre>
-          </div>
-          <div class="output-panel">
-            <h3 id="resumeTitle">Generated Resume</h3>
-            <pre id="result"></pre>
-          </div>
-          <div class="output-panel">
-            <h3 id="coverTitle">Generated Cover Letter</h3>
-            <pre id="cover"></pre>
-          </div>
-        </div>
-        <div class="button-row wrap mt-12">
-          <button id="generate" class="btn primary" type="button">Generate Resume</button>
-          <button id="compare" class="btn" type="button">Compare (analysis + outputs)</button>
-          <button id="exportText" class="btn ghost" type="button">Export Text</button>
-          <button id="exportPdf" class="btn ghost" type="button">Export PDF</button>
-          <button id="interviewBtn" class="btn" type="button">Generate Interview Prep</button>
-        </div>
-      </section>
+          <section class="mini-card">
+            <h2 id="vacancyTitle">Vacancy Text</h2>
+            <textarea id="vacancy" placeholder="Paste job posting text or URL"></textarea>
+            <div class="button-row">
+              <button id="analyze" class="btn" type="button">Analyze Vacancy</button>
+            </div>
+          </section>
 
-      <section class="card hidden" id="historyView">
-        <div class="section-head">
-          <h2>History</h2>
-          <span class="status-pill">Recent activity</span>
-        </div>
-        <p class="muted">Saved queries, uploads, and generated outputs appear here after login.</p>
-        <div id="historyList" class="history-list"></div>
+          <section class="mini-card">
+            <h2 id="compareTitle">Compare and Generated Outputs</h2>
+            <div class="content-grid three">
+              <div class="output-panel">
+                <h3 id="analysisTitle">Job Analysis</h3>
+                <pre id="analysis" style="min-height:120px"></pre>
+              </div>
+              <div class="output-panel">
+                <h3 id="resumeTitle">Generated Resume</h3>
+                <pre id="result"></pre>
+              </div>
+              <div class="output-panel">
+                <h3 id="coverTitle">Generated Cover Letter</h3>
+                <pre id="cover"></pre>
+              </div>
+            </div>
+            <div class="button-row wrap mt-12">
+              <button id="generate" class="btn primary" type="button">Generate Resume</button>
+              <button id="compare" class="btn" type="button">Compare (analysis + outputs)</button>
+              <button id="exportText" class="btn ghost" type="button">Export Text</button>
+              <button id="exportPdf" class="btn ghost" type="button">Export PDF</button>
+              <button id="interviewBtn" class="btn" type="button">Generate Interview Prep</button>
+            </div>
+          </section>
+        </section>
+
+        <section class="card hidden" id="historyView">
+          <div class="section-head">
+            <h2 id="historyTitle">History</h2>
+            <span class="status-pill">Recent activity</span>
+          </div>
+          <p class="muted" id="historySubtitle">Saved queries, uploads, and generated outputs appear here after login.</p>
+          <div id="historyList" class="history-list"></div>
+        </section>
       </section>
     </div>
     <script src="main.js"></script>
   </body>
-  </html>
+</html>
