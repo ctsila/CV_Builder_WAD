@@ -8,7 +8,8 @@ const db = new Low(adapter)
 
 async function init() {
   await db.read()
-  db.data = db.data || { users: [], profiles: [], applications: [], companies: [] }
+  db.data = db.data || { users: [], profiles: [], applications: [], companies: [], history: [] }
+  db.data.history = db.data.history || []
   await db.write()
 }
 

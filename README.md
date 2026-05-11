@@ -36,6 +36,7 @@ Current workflow
 3. Select web page language (EN/RU), resume language (EN/RU), and target region (including Russia/CIS).
 4. Upload a resume (PDF/DOCX) or paste text, then save profile.
 5. Paste vacancy text, run compare/generation, and export TXT/PDF.
+6. Open the History tab to review queries, uploads, and generated outputs.
 
 Security behavior
 

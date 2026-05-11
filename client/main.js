@@ -2,6 +2,7 @@ const apiBase = 'http://localhost:4000'
 
 let authToken = localStorage.getItem('authToken') || ''
 let theme = localStorage.getItem('theme') || 'light'
+let currentView = 'builder'
 
 const i18n = {
   EN: {
@@ -39,6 +40,13 @@ const i18n = {
     interviewBtn: 'Generate Interview Prep',
     quickStartTitle: 'Quick Start',
     quickStartText: 'Load sample data, run analysis, and preview how your profile adapts to different markets.',
+    historyTitle: 'History',
+    historyEmpty: 'No history yet. Upload, generate, or analyze something and it will appear here.',
+    builderTab: 'Builder',
+    historyTab: 'History',
+    recentActivity: 'Recent activity',
+    loginRequiredTitle: 'Login required',
+    loginRequiredText: 'Register or log in above to unlock uploads, generation, exports, and history.',
     darkLabel: 'Dark',
     lightLabel: 'Light',
     notLoggedIn: 'Not logged in',
@@ -83,6 +91,13 @@ const i18n = {
     interviewBtn: 'Сгенерировать подготовку к интервью',
     quickStartTitle: 'Быстрый старт',
     quickStartText: 'Загрузите пример данных, запустите анализ и посмотрите, как профиль адаптируется под рынки.',
+    historyTitle: 'История',
+    historyEmpty: 'Пока нет истории. Загрузите, сгенерируйте или проанализируйте что-нибудь, и оно появится здесь.',
+    builderTab: 'Конструктор',
+    historyTab: 'История',
+    recentActivity: 'Последняя активность',
+    loginRequiredTitle: 'Требуется вход',
+    loginRequiredText: 'Зарегистрируйтесь или войдите выше, чтобы разблокировать загрузку, генерацию, экспорт и историю.',
     darkLabel: 'Темная',
     lightLabel: 'Светлая',
     notLoggedIn: 'Не выполнен вход',
@@ -105,6 +120,66 @@ function authHeaders(extra = {}) {
   return h
 }
 
+function setView(view) {
+  currentView = view
+  const builderView = document.getElementById('builderView')
+  const historyView = document.getElementById('historyView')
+  const builderTab = document.getElementById('builderTab')
+  const historyTab = document.getElementById('historyTab')
+  if (builderView) builderView.classList.toggle('hidden', view !== 'builder')
+  if (historyView) historyView.classList.toggle('hidden', view !== 'history')
+  if (builderTab) builderTab.classList.toggle('active', view === 'builder')
+  if (historyTab) historyTab.classList.toggle('active', view === 'history')
+  if (view === 'history') loadHistory()
+}
+
+function setWorkflowEnabled(enabled) {
+  const ids = ['resumeFile', 'uploadResume', 'profile', 'saveProfile', 'region', 'resumeLanguage', 'vacancy', 'analyze', 'generate', 'compare', 'exportText', 'exportPdf', 'interviewBtn', 'importSample', 'importVacancy']
+  ids.forEach(id => {
+    const el = document.getElementById(id)
+    if (!el) return
+    if ('disabled' in el) el.disabled = !enabled
+  })
+  const loginPrompt = document.getElementById('loginPrompt')
+  if (loginPrompt) loginPrompt.classList.toggle('hidden', enabled)
+}
+
+async function loadHistory() {
+  const list = document.getElementById('historyList')
+  if (!list) return
+  if (!authToken) {
+    list.innerHTML = `<div class="history-empty">${t('needLogin')}</div>`
+    return
+  }
+  list.innerHTML = '<div class="history-empty">Loading...</div>'
+  const res = await fetch(apiBase + '/api/history', { headers: authHeaders() })
+  const j = await res.json()
+  if (!res.ok) {
+    list.innerHTML = `<div class="history-empty">${j.error || 'Failed to load history'}</div>`
+    return
+  }
+  const items = j.history || []
+  if (!items.length) {
+    list.innerHTML = `<div class="history-empty">${t('historyEmpty')}</div>`
+    return
+  }
+  list.innerHTML = items.map(item => {
+    const meta = item.details ? JSON.stringify(item.details, null, 2) : ''
+    return `
+      <article class="history-item">
+        <div class="history-item-head">
+          <div>
+            <p class="history-type">${item.type}</p>
+            <h3>${item.title}</h3>
+          </div>
+          <time>${new Date(item.createdAt).toLocaleString()}</time>
+        </div>
+        ${meta ? `<pre>${meta}</pre>` : ''}
+      </article>
+    `
+  }).join('')
+}
+
 function ensureAuth() {
   if (!authToken) {
     alert(t('needLogin'))
@@ -118,6 +193,7 @@ function updateAuthStatus(userEmail = '') {
   if (!el) return
   if (authToken) el.textContent = `${t('loggedInAs')} ${userEmail || localStorage.getItem('userEmail') || ''}`
   else el.textContent = t('notLoggedIn')
+  setWorkflowEnabled(!!authToken)
 }
 
 function applyAppLanguage() {
@@ -186,6 +262,26 @@ function applyAppLanguage() {
   if (themeToggle) {
     themeToggle.textContent = theme === 'dark' ? t('lightLabel') : t('darkLabel')
   }
+
+  const builderTab = document.getElementById('builderTab')
+  const historyTab = document.getElementById('historyTab')
+  if (builderTab) builderTab.textContent = t('builderTab')
+  if (historyTab) historyTab.textContent = t('historyTab')
+  const historyHeading = document.querySelector('#historyView h2')
+  if (historyHeading) historyHeading.textContent = t('historyTitle')
+  const historySubtitle = document.querySelector('#historyView .muted')
+  if (historySubtitle) historySubtitle.textContent = t('recentActivity')
+  const historyEmpty = document.querySelector('.history-empty')
+  if (historyEmpty && !authToken) historyEmpty.textContent = t('needLogin')
+  const currentHistoryList = document.getElementById('historyList')
+  if (currentHistoryList && currentView === 'history' && authToken) loadHistory()
+  const loginPrompt = document.getElementById('loginPrompt')
+  if (loginPrompt) {
+    const promptTitle = loginPrompt.querySelector('h2')
+    const promptText = loginPrompt.querySelector('.muted')
+    if (promptTitle) promptTitle.textContent = t('loginRequiredTitle')
+    if (promptText) promptText.textContent = t('loginRequiredText')
+  }
 }
 
 function applyTheme() {
@@ -207,7 +303,7 @@ document.getElementById('registerBtn')?.addEventListener('click', async () => {
   })
   const j = await res.json()
   if (!res.ok) return alert(j.error || 'Register failed')
-  alert('Registered. Now login.')
+  alert('Registered. Now log in to unlock uploads and generation.')
 })
 
 document.getElementById('loginBtn')?.addEventListener('click', async () => {
@@ -224,6 +320,8 @@ document.getElementById('loginBtn')?.addEventListener('click', async () => {
   localStorage.setItem('authToken', authToken)
   localStorage.setItem('userEmail', j.user.email)
   updateAuthStatus(j.user.email)
+  setView(currentView)
+  if (currentView === 'history') loadHistory()
 })
 
 document.getElementById('logoutBtn')?.addEventListener('click', () => {
@@ -231,6 +329,7 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   localStorage.removeItem('authToken')
   localStorage.removeItem('userEmail')
   updateAuthStatus('')
+  document.getElementById('historyList') && (document.getElementById('historyList').innerHTML = `<div class="history-empty">${t('needLogin')}</div>`)
 })
 
 document.getElementById('themeToggle')?.addEventListener('click', () => {
@@ -238,6 +337,9 @@ document.getElementById('themeToggle')?.addEventListener('click', () => {
   localStorage.setItem('theme', theme)
   applyTheme()
 })
+
+document.getElementById('builderTab')?.addEventListener('click', () => setView('builder'))
+document.getElementById('historyTab')?.addEventListener('click', () => setView('history'))
 
 document.getElementById('analyze').addEventListener('click', async () => {
   if (!ensureAuth()) return
@@ -373,8 +475,10 @@ document.getElementById('interviewBtn')?.addEventListener('click', async () => {
 document.getElementById('appLanguage')?.addEventListener('change', () => {
   applyAppLanguage()
   updateAuthStatus()
+  if (currentView === 'history' && authToken) loadHistory()
 })
 
 applyTheme()
 applyAppLanguage()
 updateAuthStatus()
+setView('builder')

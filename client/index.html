@@ -30,7 +30,19 @@
         </div>
       </header>
 
-      <section class="card">
+      <nav class="card tabs-bar" aria-label="Main navigation">
+        <button id="builderTab" class="tab-btn active" type="button">Builder</button>
+        <button id="historyTab" class="tab-btn" type="button">History</button>
+      </nav>
+
+      <section id="loginPrompt" class="card login-gate">
+        <div>
+          <h2>Login required</h2>
+          <p class="muted">Register or log in above to unlock uploads, generation, exports, and history.</p>
+        </div>
+      </section>
+
+      <section class="card" id="builderView">
         <div class="section-head">
           <h2 id="authTitle">Authentication</h2>
           <span id="authStatus" class="status-pill">Not logged in</span>
@@ -131,6 +143,15 @@
           <button id="exportPdf" class="btn ghost" type="button">Export PDF</button>
           <button id="interviewBtn" class="btn" type="button">Generate Interview Prep</button>
         </div>
+      </section>
+
+      <section class="card hidden" id="historyView">
+        <div class="section-head">
+          <h2>History</h2>
+          <span class="status-pill">Recent activity</span>
+        </div>
+        <p class="muted">Saved queries, uploads, and generated outputs appear here after login.</p>
+        <div id="historyList" class="history-list"></div>
       </section>
     </div>
     <script src="main.js"></script>

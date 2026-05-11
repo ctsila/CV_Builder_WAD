@@ -27,6 +27,20 @@
       "name": "Plan User",
       "passwordHash": "$2a$10$XAxOsayftE/pr/E7Qw8GNeUooW22P2hpxQ3Vvx9SinWdQ.xcQ9Gg6",
       "createdAt": "2026-05-11T13:14:57.574Z"
+    },
+    {
+      "id": "QVlPyWA51rxty8UMfYP8L",
+      "email": "history1778506085@example.com",
+      "name": "History User",
+      "passwordHash": "$2a$10$SRp7ihhpkV3BkJcSYL9cXe.z63NR6VuTdwQlhxQEB1zkD/X1o6E7q",
+      "createdAt": "2026-05-11T13:28:05.310Z"
+    },
+    {
+      "id": "nl-_9bj3CNz55YjDc22pA",
+      "email": "history1778506099@example.com",
+      "name": "History User",
+      "passwordHash": "$2a$10$6UgczFCz9pNBCp9bhPQN4.R8HR8gRG4keJSKrC3SnSFtr.PDFK8OK",
+      "createdAt": "2026-05-11T13:28:19.278Z"
     }
   ],
   "profiles": [
@@ -70,5 +84,39 @@
     }
   ],
   "applications": [],
-  "companies": []
+  "companies": [],
+  "history": [
+    {
+      "id": "WzKRVoWeQK2-eitzJhf2u",
+      "userId": "QVlPyWA51rxty8UMfYP8L",
+      "type": "generated",
+      "title": "Generated resume",
+      "details": {
+        "region": "RU_CIS",
+        "language": "RU",
+        "atsMatch": 100,
+        "strengths": [
+          "node",
+          "aws",
+          "docker",
+          "node",
+          "aws"
+        ]
+      },
+      "createdAt": "2026-05-11T13:28:05.784Z"
+    },
+    {
+      "id": "2YWo3uJcd3FHi5UZG0jtY",
+      "userId": "QVlPyWA51rxty8UMfYP8L",
+      "type": "upload",
+      "title": "Uploaded resume",
+      "details": {
+        "filename": "resume-upload.txt",
+        "mime": "text/plain",
+        "size": 42,
+        "parsedName": "Jane Doe"
+      },
+      "createdAt": "2026-05-11T13:28:05.683Z"
+    }
+  ]
 }

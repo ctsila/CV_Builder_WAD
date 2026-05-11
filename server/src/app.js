@@ -26,6 +26,19 @@ function authRequired(req, res, next) {
 async function main() {
   await init()
 
+  function addHistory(userId, type, title, details = {}) {
+    db.data.history = db.data.history || []
+    db.data.history.unshift({
+      id: require('nanoid').nanoid(),
+      userId,
+      type,
+      title,
+      details,
+      createdAt: new Date().toISOString()
+    })
+    db.data.history = db.data.history.slice(0, 2000)
+  }
+
   app.get('/api/ping', (req, res) => res.json({ ok: true }))
 
   app.post('/api/auth/register', async (req, res) => {
@@ -73,6 +86,11 @@ async function main() {
   app.post('/api/vacancy/parse', authRequired, (req, res) => {
     const { text } = req.body
     const analysis = generator.analyzeVacancy(text)
+    addHistory(req.user.sub, 'query', 'Analyzed vacancy', {
+      textPreview: String(text || '').slice(0, 220),
+      requiredCount: analysis.required?.length || 0,
+      responsibilitiesCount: analysis.responsibilities?.length || 0
+    })
     res.json({ analysis })
   })
 
@@ -84,6 +102,12 @@ async function main() {
     try {
       if (!req.file) return res.status(400).json({ error: 'no file' })
       const parsed = await generator.parseResumeBuffer(req.file)
+      addHistory(req.user.sub, 'upload', 'Uploaded resume', {
+        filename: req.file.originalname,
+        mime: req.file.mimetype,
+        size: req.file.size,
+        parsedName: parsed.fullName || ''
+      })
       res.json({ parsed })
     } catch (err) {
       console.error('upload parse error', err)
@@ -95,6 +119,12 @@ async function main() {
     const { profile, vacancyText, region, language } = req.body
     const analysis = generator.analyzeVacancy(vacancyText)
     const out = generator.generateResume(profile, analysis, { region, language })
+    addHistory(req.user.sub, 'generated', 'Generated resume', {
+      region,
+      language,
+      atsMatch: out.atsMatch,
+      strengths: out.strengths?.map(s => s.skill).slice(0, 5) || []
+    })
     res.json(out)
   })
 
@@ -102,6 +132,7 @@ async function main() {
     const { profile, vacancyText, tone, region, language } = req.body
     const analysis = generator.analyzeVacancy(vacancyText)
     const out = generator.generateCoverLetter(profile, vacancyText, analysis, tone, region, language)
+    addHistory(req.user.sub, 'generated', 'Generated cover letter', { region, language, tone })
     res.json(out)
   })
 
@@ -110,6 +141,7 @@ async function main() {
     const analysis = generator.analyzeVacancy(vacancyText)
     const gen = generator.generateResume(profile, analysis, { region, language })
     const cover = generator.generateCoverLetter(profile, vacancyText, analysis, tone, region, language)
+    addHistory(req.user.sub, 'generated', 'Compared and tailored application', { region, language, tone, atsMatch: gen.atsMatch })
     // Compose a simple compare response including ATS match and risk flags
     res.json({ analysis, resume: gen.resume, coverLetter: cover.letter, atsMatch: gen.atsMatch, riskFlags: gen.riskFlags, strengths: gen.strengths })
   })
@@ -127,6 +159,7 @@ async function main() {
         res.setHeader('Content-Type', 'application/pdf')
         res.setHeader('Content-Disposition', 'attachment; filename=resume.pdf')
         res.send(pdfData)
+        addHistory(req.user.sub, 'export', 'Exported resume as PDF', { format: 'pdf' })
       })
       // Simple PDF rendering: header, summary, skills, experiences
       doc.fontSize(18).text(resume.header.name || '', { align: 'left' })
@@ -158,6 +191,11 @@ async function main() {
     res.json({ ok, details })
   })
 
+  app.get('/api/history', authRequired, (req, res) => {
+    const history = (db.data.history || []).filter(item => item.userId === req.user.sub)
+    res.json({ history })
+  })
+
   // Interview prep generator (simple heuristics)
   app.post('/api/interview', authRequired, (req, res) => {
     const { profile, vacancyText } = req.body
@@ -183,6 +221,7 @@ async function main() {
     })
     res.setHeader('Content-Type', 'text/plain')
     res.send(text.join('\n'))
+    addHistory(req.user.sub, 'export', 'Exported resume as text', { format: 'txt' })
   })
 
   // Serve client SPA at root and keep /client as alias

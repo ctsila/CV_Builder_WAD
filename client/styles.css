@@ -87,6 +87,87 @@ h3 {
 	padding: 16px;
 }
 
+.hidden {
+	display: none !important;
+}
+
+.tabs-bar {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	padding: 10px 12px;
+}
+
+.tab-btn {
+	border: 1px solid var(--line);
+	background: transparent;
+	color: var(--text);
+	border-radius: 999px;
+	padding: 9px 14px;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.tab-btn.active {
+	background: linear-gradient(135deg, var(--primary), var(--primary-2));
+	color: #fff;
+	border-color: transparent;
+}
+
+.history-list {
+	display: grid;
+	gap: 12px;
+}
+
+.history-item {
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	padding: 14px;
+	background: var(--bg-soft);
+}
+
+.history-item-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 10px;
+}
+
+.history-type {
+	margin: 0 0 2px;
+	color: var(--primary);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	font-size: 0.75rem;
+}
+
+.history-item pre {
+	margin-top: 10px;
+	min-height: auto;
+	background: color-mix(in oklab, var(--output-bg) 80%, transparent);
+}
+
+.history-empty {
+	border: 1px dashed var(--line);
+	border-radius: 14px;
+	padding: 16px;
+	color: var(--muted);
+	text-align: center;
+}
+
+.login-gate {
+	border-style: dashed;
+	background: color-mix(in oklab, var(--bg-soft) 78%, transparent);
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
 .topbar {
 	display: flex;
 	justify-content: space-between;
