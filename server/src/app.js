@@ -89,7 +89,8 @@ async function main() {
   })
 
   // Serve client SPA at root and keep /client as alias
-  const clientDir = path.join(__dirname, '..', 'client')
+  // __dirname is /server/src so go up two levels to workspace root client/
+  const clientDir = path.join(__dirname, '..', '..', 'client')
   app.use(express.static(clientDir))
   app.use('/client', express.static(clientDir))
 
