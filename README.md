@@ -32,7 +32,7 @@ Notes:
 Current workflow
 
 1. Open the app at `http://localhost:4000/`.
-2. Register and log in from the Authentication section.
+2. Register and log in from the login page; the account workspace appears only after authentication.
 3. Select web page language (EN/RU), resume language (EN/RU), and target region (including Russia/CIS).
 4. Upload a resume (PDF/DOCX) or paste text, then save profile.
 5. Paste vacancy text, run compare/generation, and export TXT/PDF.

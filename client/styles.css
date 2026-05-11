@@ -135,6 +135,21 @@ h3 {
 	padding: 18px;
 }
 
+.auth-notice {
+	min-height: 1.4em;
+	margin: 12px 0 0;
+	color: var(--muted);
+	font-size: 0.92rem;
+}
+
+.auth-notice.error {
+	color: #ef4444;
+}
+
+.auth-notice.success {
+	color: #14b8a6;
+}
+
 .account-shell {
 	display: grid;
 	gap: 14px;

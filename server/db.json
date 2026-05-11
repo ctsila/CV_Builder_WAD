@@ -41,6 +41,13 @@
       "name": "History User",
       "passwordHash": "$2a$10$6UgczFCz9pNBCp9bhPQN4.R8HR8gRG4keJSKrC3SnSFtr.PDFK8OK",
       "createdAt": "2026-05-11T13:28:19.278Z"
+    },
+    {
+      "id": "_WGF74NPwYzSXvT7b1Ft7",
+      "email": "clicktest1778506723@example.com",
+      "name": "Click Test",
+      "passwordHash": "$2a$10$tIl.CKAGkm2TeIOEHKgne.iN5GPq2JXG3qe2bDdGGiGQn2zbNG8Re",
+      "createdAt": "2026-05-11T13:38:43.463Z"
     }
   ],
   "profiles": [
@@ -86,6 +93,38 @@
   "applications": [],
   "companies": [],
   "history": [
+    {
+      "id": "7BaLi2z_eZqGtLNlB1owN",
+      "userId": "nl-_9bj3CNz55YjDc22pA",
+      "type": "generated",
+      "title": "Generated resume",
+      "details": {
+        "region": "RU_CIS",
+        "language": "RU",
+        "atsMatch": 100,
+        "strengths": [
+          "node",
+          "aws",
+          "docker",
+          "node",
+          "aws"
+        ]
+      },
+      "createdAt": "2026-05-11T13:28:19.401Z"
+    },
+    {
+      "id": "kXDck_-9qafnp2FasrXe2",
+      "userId": "nl-_9bj3CNz55YjDc22pA",
+      "type": "upload",
+      "title": "Uploaded resume",
+      "details": {
+        "filename": "resume-upload.txt",
+        "mime": "text/plain",
+        "size": 42,
+        "parsedName": "Jane Doe"
+      },
+      "createdAt": "2026-05-11T13:28:19.391Z"
+    },
     {
       "id": "WzKRVoWeQK2-eitzJhf2u",
       "userId": "QVlPyWA51rxty8UMfYP8L",

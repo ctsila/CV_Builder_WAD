@@ -124,6 +124,14 @@ function authHeaders(extra = {}) {
   return h
 }
 
+function setAuthNotice(message, kind = '') {
+  const el = document.getElementById('authNotice')
+  if (!el) return
+  el.textContent = message || ''
+  el.classList.remove('error', 'success')
+  if (kind) el.classList.add(kind)
+}
+
 function setView(view) {
   currentView = view
   const landingView = document.getElementById('landingView')
@@ -304,31 +312,49 @@ document.getElementById('registerBtn')?.addEventListener('click', async () => {
   const name = document.getElementById('authName').value.trim()
   const email = document.getElementById('authEmail').value.trim()
   const password = document.getElementById('authPassword').value
-  const res = await fetch(apiBase + '/api/auth/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password })
-  })
-  const j = await res.json()
-  if (!res.ok) return alert(j.error || 'Register failed')
-  alert('Registered. Now log in to unlock uploads and generation.')
+  try {
+    setAuthNotice('Registering...')
+    const res = await fetch(apiBase + '/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    })
+    const j = await res.json()
+    if (!res.ok) {
+      setAuthNotice(j.error || 'Register failed', 'error')
+      return
+    }
+    setAuthNotice('Registration successful. Please log in.', 'success')
+    document.getElementById('authPassword').value = ''
+  } catch (error) {
+    setAuthNotice(`Register failed: ${error.message}`, 'error')
+  }
 })
 
 document.getElementById('loginBtn')?.addEventListener('click', async () => {
   const email = document.getElementById('authEmail').value.trim()
   const password = document.getElementById('authPassword').value
-  const res = await fetch(apiBase + '/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  })
-  const j = await res.json()
-  if (!res.ok) return alert(j.error || 'Login failed')
-  authToken = j.token
-  localStorage.setItem('authToken', authToken)
-  localStorage.setItem('userEmail', j.user.email)
-  updateAuthStatus(j.user.email)
-  setView('builder')
+  try {
+    setAuthNotice('Logging in...')
+    const res = await fetch(apiBase + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    const j = await res.json()
+    if (!res.ok) {
+      setAuthNotice(j.error || 'Login failed', 'error')
+      return
+    }
+    authToken = j.token
+    localStorage.setItem('authToken', authToken)
+    localStorage.setItem('userEmail', j.user.email)
+    setAuthNotice('Login successful.', 'success')
+    updateAuthStatus(j.user.email)
+    setView('builder')
+  } catch (error) {
+    setAuthNotice(`Login failed: ${error.message}`, 'error')
+  }
 })
 
 document.getElementById('logoutBtn')?.addEventListener('click', () => {
@@ -336,6 +362,7 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   localStorage.removeItem('authToken')
   localStorage.removeItem('userEmail')
   updateAuthStatus('')
+  setAuthNotice('Logged out.')
   const historyList = document.getElementById('historyList')
   if (historyList) historyList.innerHTML = `<div class="history-empty">${t('needLogin')}</div>`
   setView('landing')
