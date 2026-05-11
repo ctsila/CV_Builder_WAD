@@ -10,9 +10,34 @@
     <div class="container">
       <h1>AI Resume Generator — MVP</h1>
       <section>
-        <h2>Master Profile (JSON)</h2>
-        <textarea id="profile" placeholder='Paste a JSON profile or sample (see README)'></textarea>
-        <button id="saveProfile">Save Profile</button>
+        <h2>Master Profile</h2>
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="flex:1">
+            <label>Upload resume (PDF or DOCX):</label>
+            <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,text/plain" />
+            <button id="uploadResume">Upload & Parse</button>
+            <div style="margin-top:8px">
+              <label>Or paste your resume text:</label>
+              <textarea id="profile" placeholder='Paste resume text or JSON profile'></textarea>
+              <button id="saveProfile">Save Profile</button>
+            </div>
+          </div>
+          <div style="width:220px">
+            <label>Target country/region</label>
+            <select id="region">
+              <option value="US">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="EU">Europe</option>
+              <option value="DE">Germany</option>
+              <option value="UAE">UAE</option>
+              <option value="GLOBAL">Global</option>
+            </select>
+            <div style="margin-top:12px">
+              <button id="importSample">Load Sample Profile</button>
+              <button id="importVacancy">Load Sample Vacancy</button>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section>
@@ -41,6 +66,8 @@
           <button id="generate">Generate Resume</button>
           <button id="compare">Compare (analysis + outputs)</button>
           <button id="exportText">Export Text</button>
+          <button id="exportPdf">Export PDF</button>
+          <button id="interviewBtn">Generate Interview Prep</button>
         </div>
       </section>
     </div>

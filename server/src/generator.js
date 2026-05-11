@@ -88,10 +88,21 @@ function generateResume(profile, vacancyAnalysis, options = {}) {
     experiences: []
   }
 
+  const region = (options.region || 'GLOBAL').toUpperCase()
   if (strengths.length) {
     resume.summary = `${profile.contact && profile.contact.title ? profile.contact.title + ' ' : ''}${profile.fullName} — experience with ${strengths.slice(0,4).map(s => s.skill).join(', ')}. Evidence-backed and focused on ${vacancyAnalysis.domainKeywords.join(', ')}`
   } else {
     resume.summary = `Master career profile for ${profile.fullName}.`;
+  }
+  // Region-specific formatting hints (simple)
+  if (region === 'DE' || region === 'EU') {
+    resume.format = { includePhoto: false, length: '2-pages-preferred', tone: 'formal' }
+  } else if (region === 'UK') {
+    resume.format = { includePhoto: false, length: '2-pages', tone: 'concise' }
+  } else if (region === 'US') {
+    resume.format = { includePhoto: false, length: '1-page-preferred', tone: 'ats-friendly' }
+  } else {
+    resume.format = { includePhoto: false, length: 'flexible', tone: 'neutral' }
   }
 
   ;(profile.experiences || []).forEach(exp => {
@@ -111,7 +122,7 @@ function generateResume(profile, vacancyAnalysis, options = {}) {
   return { resume, strengths, missing, evidenceMap, riskFlags, atsMatch }
 }
 
-function generateCoverLetter(profile, vacancyText, vacancyAnalysis, tone = 'concise') {
+function generateCoverLetter(profile, vacancyText, vacancyAnalysis, tone = 'concise', region='GLOBAL') {
   const greeting = `Dear Hiring Manager,`;
   const intro = `I am ${profile.fullName}. I am applying for this role because my experience with ${ (profile.skills||[]).slice(0,5).join(', ') } aligns with your requirements.`
   const bodyLines = []
@@ -123,8 +134,73 @@ function generateCoverLetter(profile, vacancyText, vacancyAnalysis, tone = 'conc
   })
   if (ranking.missing.length) bodyLines.push(`I acknowledge gaps in: ${ranking.missing.join(', ')} and I have clear learning plans and related experience to bridge them.`)
   const closer = `Sincerely,\n${profile.fullName}`
-  const letter = [greeting, intro, bodyLines.join('\n'), closer].filter(Boolean).join('\n\n')
+  // region-specific salutation tweaks
+  let salutation = greeting
+  if (region === 'DE') salutation = 'Sehr geehrte Damen und Herren,'
+  else if (region === 'UK') salutation = 'Dear Hiring Team,'
+  const letter = [salutation, intro, bodyLines.join('\n'), closer].filter(Boolean).join('\n\n')
   return { letter }
 }
 
 module.exports = { analyzeVacancy, rankProfile, generateResume, generateCoverLetter }
+
+// Resume parsing helper: accepts multer file buffer and returns a minimal inferred profile
+const pdf = require('pdf-parse')
+const mammoth = require('mammoth')
+const path = require('path')
+
+async function parseResumeBuffer(file) {
+  const mime = file.mimetype || ''
+  let text = ''
+  if (mime === 'application/pdf' || path.extname(file.originalname).toLowerCase() === '.pdf') {
+    const data = await pdf(file.buffer)
+    text = data.text || ''
+  } else if (mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || path.extname(file.originalname).toLowerCase() === '.docx' || path.extname(file.originalname).toLowerCase() === '.doc') {
+    const result = await mammoth.extractRawText({ buffer: file.buffer })
+    text = result.value || ''
+  } else {
+    // fallback: treat as plain text
+    text = file.buffer.toString('utf8')
+  }
+
+  // Very simple heuristic parser to extract name, emails, phone, skills and bullets
+  const lines = (text || '').split(/\r?\n/).map(l => l.trim()).filter(Boolean)
+  const profile = { fullName: '', contact: {}, skills: [], experiences: [] }
+  // try to find name as first non-empty line
+  if (lines.length) profile.fullName = lines[0]
+  const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i
+  const phoneRe = /\+?[0-9][0-9 ()-]{6,}/
+  lines.forEach(l => {
+    const e = l.match(emailRe); if (e && !profile.contact.email) profile.contact.email = e[0]
+    const p = l.match(phoneRe); if (p && !profile.contact.phone) profile.contact.phone = p[0]
+  })
+
+  // extract skills by matching TECH_KEYWORDS
+  const skillsSet = new Set()
+  lines.forEach(l => {
+    TECH_KEYWORDS.forEach(k => { if (l.toLowerCase().includes(k)) skillsSet.add(k) })
+  })
+  profile.skills = Array.from(skillsSet)
+
+  // crude experience extraction: lines starting with year or containing company-like words
+  const expBlocks = []
+  let current = null
+  lines.forEach(l => {
+    if (/\b(20\d{2}|19\d{2})\b/.test(l) && current) { expBlocks.push(current); current = { header: l, bullets: [] } }
+    else if (/^\-\s+/.test(l) || /^•\s+/.test(l)) {
+      if (!current) current = { header: '', bullets: [] }
+      current.bullets.push(l.replace(/^[-•]\s+/, ''))
+    } else {
+      // start a block if line looks like 'Company - Title' or contains 'at'
+      if (/ at | - |, /.test(l) && !/^\d/.test(l)) { if (current) expBlocks.push(current); current = { header: l, bullets: [] } }
+    }
+  })
+  if (current) expBlocks.push(current)
+  profile.experiences = expBlocks.slice(0,5).map(b => ({ company: b.header, title: '', bullets: b.bullets }))
+
+  return profile
+}
+
+// export parse helper
+module.exports.parseResumeBuffer = parseResumeBuffer
+
