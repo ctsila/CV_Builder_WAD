@@ -48,6 +48,13 @@
       "name": "Click Test",
       "passwordHash": "$2a$10$tIl.CKAGkm2TeIOEHKgne.iN5GPq2JXG3qe2bDdGGiGQn2zbNG8Re",
       "createdAt": "2026-05-11T13:38:43.463Z"
+    },
+    {
+      "id": "Jyj-khZ3Y93wmYF2EA5lD",
+      "email": "clicktest1778507194@example.com",
+      "name": "Click Test",
+      "passwordHash": "$2a$10$7AqYM5CmAoL6kRMSnizyG.qxuT.7AW8KhWad8y2BXp/CBSI3OjC1W",
+      "createdAt": "2026-05-11T13:46:34.249Z"
     }
   ],
   "profiles": [

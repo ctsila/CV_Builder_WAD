@@ -316,6 +316,75 @@ textarea:disabled {
 	grid-template-columns: repeat(3, minmax(150px, 1fr));
 }
 
+.auth-card .auth-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 8px;
+	align-items: stretch;
+}
+
+.auth-card .auth-actions {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 8px;
+	margin-top: 2px;
+}
+
+.auth-card .field-inline input {
+	width: 100%;
+}
+
+.auth-card .field-inline {
+	min-width: 0;
+	display: grid;
+	grid-template-rows: auto minmax(1.1rem, auto);
+	gap: 6px;
+	min-height: 4.4rem;
+}
+
+.auth-card .field-help {
+	margin-top: 0;
+	min-height: 1.1em;
+	line-height: 1.35;
+	font-size: 0.82rem;
+}
+
+.auth-card #passwordHelp {
+	display: block;
+}
+
+.auth-card .restore-password {
+	min-height: 1.1rem;
+	font-size: 0.82rem;
+	text-align: left;
+}
+
+.auth-card .restore-password a {
+	color: var(--primary);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.auth-card .restore-password a:hover {
+	text-decoration: underline;
+}
+
+.auth-card .auth-actions .btn {
+	width: 100%;
+	min-width: 0;
+}
+
+.auth-card .tab-btn {
+	padding: 8px 14px;
+	border-radius: 999px;
+	font-weight: 700;
+}
+
+.auth-card .tab-btn.active {
+	box-shadow: 0 6px 18px rgba(11,95,255,0.18);
+}
+
 .locale-grid {
 	grid-template-columns: repeat(2, minmax(180px, 1fr));
 }
@@ -337,6 +406,19 @@ textarea:disabled {
 	display: grid;
 	gap: 6px;
 	min-width: 210px;
+}
+
+.field-help {
+	font-size: 0.82rem;
+	color: var(--muted);
+	margin-top: 6px;
+}
+.field-help.error {
+	color: #ef4444;
+}
+.input-error {
+	border-color: #ef4444;
+	box-shadow: 0 0 0 3px rgba(239,68,68,0.06);
 }
 
 label {

@@ -3,6 +3,7 @@ const apiBase = 'http://localhost:4000'
 let authToken = localStorage.getItem('authToken') || ''
 let theme = localStorage.getItem('theme') || 'light'
 let currentView = 'landing'
+let currentAuthMode = 'login'
 
 const i18n = {
   EN: {
@@ -124,6 +125,50 @@ function authHeaders(extra = {}) {
   return h
 }
 
+function validatePassword(p) {
+  if (!p || p.length < 8) return { ok: false, msg: 'Minimum 8 characters' }
+  if (!/[a-z]/.test(p)) return { ok: false, msg: 'Include a lower-case letter' }
+  if (!/[A-Z]/.test(p)) return { ok: false, msg: 'Include an upper-case letter' }
+  if (!/[0-9]/.test(p)) return { ok: false, msg: 'Include a number' }
+  if (!/[!@#$%^&*()_+\-=[\]{};:\"\\|,.<>/?]/.test(p)) return { ok: false, msg: 'Include a special character' }
+  return { ok: true }
+}
+
+function showFieldError(el, message) {
+  if (!el) return
+  el.classList.add('input-error')
+  const help = document.getElementById(el.id === 'authPassword' ? 'passwordHelp' : 'emailHelp')
+  if (help) { help.textContent = message; help.classList.add('error') }
+}
+
+function clearFieldError(el) {
+  if (!el) return
+  el.classList.remove('input-error')
+  const help = document.getElementById(el.id === 'authPassword' ? 'passwordHelp' : 'emailHelp')
+  if (help) {
+    if (el.id === 'authPassword') {
+      help.textContent = 'Password must be 8+ chars, include upper and lower case, a number and a special character.'
+    } else {
+      help.innerHTML = '&nbsp;'
+    }
+    help.classList.remove('error')
+  }
+}
+
+function clearConfirmError() {
+  const confirmEl = document.getElementById('authPasswordConfirm')
+  const confirmHelp = document.getElementById('confirmHelp')
+  if (confirmEl) confirmEl.classList.remove('input-error')
+  if (confirmHelp) confirmHelp.innerHTML = '&nbsp;'
+}
+
+function restorePasswordFlow(email) {
+  // Simple client-side hint — server-side reset not implemented
+  setAuthNotice('Email already registered. If you forgot your password, try logging in or contact support to restore it.', 'error')
+  const emailHelp = document.getElementById('emailHelp')
+  if (emailHelp) emailHelp.innerHTML = `Email exists — <a href="mailto:support@example.com?subject=Password%20reset%20for%20${encodeURIComponent(email)}">Restore password</a>`
+}
+
 function setAuthNotice(message, kind = '') {
   const el = document.getElementById('authNotice')
   if (!el) return
@@ -213,6 +258,10 @@ function updateAuthStatus(userEmail = '') {
     accountStatus.textContent = authToken ? `${t('loggedInAs')} ${userEmail || localStorage.getItem('userEmail') || ''}` : t('notLoggedIn')
   }
   setWorkflowEnabled(!!authToken)
+
+  // Hide the small account-actions block on the auth (login/register) page when not authenticated
+  const accountActions = document.querySelector('.account-actions')
+  if (accountActions) accountActions.style.display = authToken ? '' : 'none'
 }
 
 function applyAppLanguage() {
@@ -309,52 +358,13 @@ function applyTheme() {
 }
 
 document.getElementById('registerBtn')?.addEventListener('click', async () => {
-  const name = document.getElementById('authName').value.trim()
-  const email = document.getElementById('authEmail').value.trim()
-  const password = document.getElementById('authPassword').value
-  try {
-    setAuthNotice('Registering...')
-    const res = await fetch(apiBase + '/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
-    })
-    const j = await res.json()
-    if (!res.ok) {
-      setAuthNotice(j.error || 'Register failed', 'error')
-      return
-    }
-    setAuthNotice('Registration successful. Please log in.', 'success')
-    document.getElementById('authPassword').value = ''
-  } catch (error) {
-    setAuthNotice(`Register failed: ${error.message}`, 'error')
-  }
+  if (currentAuthMode !== 'register') return
+  await submitRegister()
 })
 
 document.getElementById('loginBtn')?.addEventListener('click', async () => {
-  const email = document.getElementById('authEmail').value.trim()
-  const password = document.getElementById('authPassword').value
-  try {
-    setAuthNotice('Logging in...')
-    const res = await fetch(apiBase + '/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    })
-    const j = await res.json()
-    if (!res.ok) {
-      setAuthNotice(j.error || 'Login failed', 'error')
-      return
-    }
-    authToken = j.token
-    localStorage.setItem('authToken', authToken)
-    localStorage.setItem('userEmail', j.user.email)
-    setAuthNotice('Login successful.', 'success')
-    updateAuthStatus(j.user.email)
-    setView('builder')
-  } catch (error) {
-    setAuthNotice(`Login failed: ${error.message}`, 'error')
-  }
+  if (currentAuthMode !== 'login') return
+  await submitLogin()
 })
 
 document.getElementById('logoutBtn')?.addEventListener('click', () => {
@@ -518,3 +528,156 @@ applyTheme()
 applyAppLanguage()
 updateAuthStatus()
 setView(authToken ? 'builder' : 'landing')
+
+// Auth tab handling: switch between Login and Register views
+function setAuthMode(mode) {
+  currentAuthMode = mode
+  const loginTab = document.getElementById('authTabLogin')
+  const registerTab = document.getElementById('authTabRegister')
+  const nameField = document.getElementById('fieldName')
+  const confirmField = document.getElementById('fieldConfirm')
+  const registerBtn = document.getElementById('registerBtn')
+  const loginBtn = document.getElementById('loginBtn')
+  const passwordHelp = document.getElementById('passwordHelp')
+  const emailHelp = document.getElementById('emailHelp')
+  const nameHelp = document.getElementById('nameHelp')
+  const restorePasswordBlock = document.getElementById('restorePasswordBlock')
+  if (mode === 'login') {
+    loginTab && loginTab.classList.add('active')
+    registerTab && registerTab.classList.remove('active')
+    if (nameField) nameField.style.display = 'none'
+    if (confirmField) confirmField.style.display = 'none'
+    if (registerBtn) registerBtn.style.display = 'none'
+    if (loginBtn) loginBtn.style.display = ''
+    if (passwordHelp) passwordHelp.style.display = 'none'
+    if (nameHelp) nameHelp.innerHTML = '&nbsp;'
+    if (restorePasswordBlock) restorePasswordBlock.style.display = 'block'
+    clearFieldError(document.getElementById('authEmail'))
+    clearFieldError(document.getElementById('authPassword'))
+    clearConfirmError()
+    document.getElementById('authPassword').placeholder = t('passwordPlaceholder')
+  } else {
+    registerTab && registerTab.classList.add('active')
+    loginTab && loginTab.classList.remove('active')
+    if (nameField) nameField.style.display = ''
+    if (confirmField) confirmField.style.display = ''
+    if (registerBtn) registerBtn.style.display = ''
+    if (loginBtn) loginBtn.style.display = 'none'
+    if (passwordHelp) {
+      passwordHelp.textContent = 'Password must be 8+ chars, include upper and lower case, a number and a special character.'
+      passwordHelp.style.display = 'block'
+    }
+    if (emailHelp && !emailHelp.textContent) emailHelp.innerHTML = '&nbsp;'
+    if (nameHelp) nameHelp.innerHTML = '&nbsp;'
+    if (restorePasswordBlock) restorePasswordBlock.style.display = 'none'
+    document.getElementById('authPassword').placeholder = t('passwordPlaceholder')
+  }
+}
+
+document.getElementById('authTabLogin')?.addEventListener('click', () => setAuthMode('login'))
+document.getElementById('authTabRegister')?.addEventListener('click', () => setAuthMode('register'))
+
+document.getElementById('authForm')?.addEventListener('keydown', event => {
+  if (event.key !== 'Enter') return
+  const targetTag = event.target?.tagName?.toLowerCase()
+  if (targetTag === 'textarea') return
+  event.preventDefault()
+  if (currentAuthMode === 'register') submitRegister()
+  else submitLogin()
+})
+
+async function submitRegister() {
+  const nameEl = document.getElementById('authName')
+  const emailEl = document.getElementById('authEmail')
+  const passwordEl = document.getElementById('authPassword')
+  const confirmEl = document.getElementById('authPasswordConfirm')
+  const email = emailEl.value.trim()
+  const name = nameEl.value.trim()
+  const password = passwordEl.value
+  const passwordConfirm = confirmEl.value
+  clearFieldError(emailEl)
+  clearFieldError(passwordEl)
+  clearConfirmError()
+  const v = validatePassword(password)
+  if (!v.ok) {
+    showFieldError(passwordEl, v.msg)
+    setAuthNotice('Password does not meet requirements', 'error')
+    return
+  }
+  if (password !== passwordConfirm) {
+    confirmEl.classList.add('input-error')
+    const confirmHelp = document.getElementById('confirmHelp')
+    if (confirmHelp) {
+      confirmHelp.textContent = 'Passwords do not match'
+      confirmHelp.classList.add('error')
+    }
+    setAuthNotice('Passwords do not match', 'error')
+    return
+  }
+  try {
+    setAuthNotice('Registering...')
+    const res = await fetch(apiBase + '/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    })
+    const j = await (res.headers.get('content-type') || '').includes('application/json') ? await res.json() : {}
+    if (!res.ok) {
+      if (j && j.error === 'user_exists') {
+        showFieldError(emailEl, 'Email already registered')
+        restorePasswordFlow(email)
+        return
+      }
+      setAuthNotice(j.error || 'Register failed', 'error')
+      return
+    }
+    setAuthNotice('Registration successful. Please log in.', 'success')
+    passwordEl.value = ''
+    confirmEl.value = ''
+    const emailHelp = document.getElementById('emailHelp')
+    if (emailHelp) emailHelp.innerHTML = '&nbsp;'
+  } catch (error) {
+    setAuthNotice('Register failed: server unreachable', 'error')
+  }
+}
+
+async function submitLogin() {
+  const nameEl = document.getElementById('authName')
+  if (nameEl) nameEl.style.display = 'none'
+  const emailEl = document.getElementById('authEmail')
+  const passwordEl = document.getElementById('authPassword')
+  clearFieldError(emailEl)
+  clearFieldError(passwordEl)
+  clearConfirmError()
+  const email = emailEl.value.trim()
+  const password = passwordEl.value
+  try {
+    setAuthNotice('Logging in...')
+    const res = await fetch(apiBase + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    const j = await (res.headers.get('content-type') || '').includes('application/json') ? await res.json() : {}
+    if (!res.ok) {
+      if (j && j.error === 'invalid_credentials') {
+        setAuthNotice('Invalid email or password', 'error')
+        restorePasswordFlow(email)
+      } else {
+        setAuthNotice(j.error || 'Login failed', 'error')
+      }
+      return
+    }
+    authToken = j.token
+    localStorage.setItem('authToken', authToken)
+    localStorage.setItem('userEmail', j.user.email)
+    setAuthNotice('Login successful.', 'success')
+    updateAuthStatus(j.user.email)
+    setView('builder')
+  } catch (error) {
+    setAuthNotice('Login failed: server unreachable', 'error')
+  }
+}
+
+// Initialize auth mode default
+setAuthMode('login')
