@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AI Resume Generator — MVP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>AI Resume Generator — MVP</h1>
+      <section>
+        <h2>Master Profile (JSON)</h2>
+        <textarea id="profile" placeholder='Paste a JSON profile or sample (see README)'></textarea>
+        <button id="saveProfile">Save Profile</button>
+      </section>
+
+      <section>
+        <h2>Vacancy Text</h2>
+        <textarea id="vacancy" placeholder="Paste job posting text or URL"></textarea>
+        <button id="analyze">Analyze Vacancy</button>
+      </section>
+
+      <section>
+        <h2>Generated Resume</h2>
+        <pre id="result"></pre>
+        <button id="generate">Generate Resume</button>
+        <button id="exportText">Export Text</button>
+      </section>
+    </div>
+    <script src="main.js"></script>
+  </body>
+  </html>
