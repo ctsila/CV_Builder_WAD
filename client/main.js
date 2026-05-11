@@ -7,10 +7,7 @@ let currentAuthMode = 'login'
 
 const i18n = {
   EN: {
-    documentTitle: 'AI Resume Generator — MVP',
     pageTitle: 'AI Resume Generator',
-    topEyebrow: 'Truthful AI Application Platform',
-    topSubtitle: 'Tailored resumes and cover letters with No Lies Mode, locale controls, and explainable edits.',
     landingTitle: 'Truthful AI application workflow for modern job seekers',
     landingText: 'Build a master career profile, tailor resumes and cover letters for each vacancy, and keep a history of every upload, query, and generated version. No fake claims. No hidden automation. Just explainable, market-aware job documents.',
     authTitle: 'Authentication',
@@ -51,43 +48,19 @@ const i18n = {
     builderTab: 'Builder',
     historyTab: 'History',
     recentActivity: 'Recent activity',
-    historyRecentActivity: 'Recent activity',
     loginRequiredTitle: 'Login required',
     loginRequiredText: 'Register or log in above to unlock uploads, generation, exports, and history.',
     darkLabel: 'Dark',
     lightLabel: 'Light',
-    langEn: 'English',
-    langRu: 'Russian',
-    langEs: 'Spanish',
     notLoggedIn: 'Not logged in',
     loggedInAs: 'Logged in as',
     needLogin: 'Please login first',
     chooseFile: 'Choose a file',
     parsedOk: 'Parsed resume - review and save the profile',
-    parseFail: 'Failed to parse resume',
-    passwordRules: 'Password must be 8+ chars, include upper and lower case, a number and a special character.',
-    confirmPassword: 'Repeat password',
-    restorePassword: 'Restore password',
-    restorePasswordHint: 'Email already registered. If you forgot your password, try logging in or restore it.',
-    emailExists: 'Email already registered',
-    passwordMismatch: 'Passwords do not match',
-    registering: 'Registering...',
-    loggingIn: 'Logging in...',
-    registerSuccess: 'Registration successful. Please log in.',
-    loginSuccess: 'Login successful.',
-    invalidCredentials: 'Invalid email or password',
-    registerFailed: 'Register failed',
-    loginFailed: 'Login failed',
-    serverUnreachable: 'server unreachable',
-    loggedOut: 'Logged out.',
-    loadingHistory: 'Loading...',
-    failedLoadHistory: 'Failed to load history'
+    parseFail: 'Failed to parse resume'
   },
   RU: {
-    documentTitle: 'AI генератор резюме — MVP',
     pageTitle: 'AI генератор резюме',
-    topEyebrow: 'Прозрачная AI-платформа для карьеры',
-    topSubtitle: 'Адаптированные резюме и сопроводительные письма с No Lies Mode, выбором локали и понятными правками.',
     landingTitle: 'Прозрачный AI-процесс для современного поиска работы',
     landingText: 'Создайте мастер-профиль карьеры, адаптируйте резюме и сопроводительные письма под каждую вакансию и сохраняйте историю загрузок, запросов и сгенерированных версий. Без фейковых фактов. Без скрытой магии. Только объяснимые и контекстные документы.',
     authTitle: 'Авторизация',
@@ -128,114 +101,16 @@ const i18n = {
     builderTab: 'Конструктор',
     historyTab: 'История',
     recentActivity: 'Последняя активность',
-    historyRecentActivity: 'Последняя активность',
     loginRequiredTitle: 'Требуется вход',
     loginRequiredText: 'Зарегистрируйтесь или войдите выше, чтобы разблокировать загрузку, генерацию, экспорт и историю.',
     darkLabel: 'Темная',
     lightLabel: 'Светлая',
-    langEn: 'Английский',
-    langRu: 'Русский',
-    langEs: 'Испанский',
     notLoggedIn: 'Не выполнен вход',
     loggedInAs: 'Вход выполнен:',
     needLogin: 'Сначала выполните вход',
     chooseFile: 'Выберите файл',
     parsedOk: 'Резюме распознано - проверьте и сохраните профиль',
-    parseFail: 'Не удалось распознать резюме',
-    passwordRules: 'Пароль должен быть не менее 8 символов, содержать заглавные и строчные буквы, цифру и спецсимвол.',
-    confirmPassword: 'Повторите пароль',
-    restorePassword: 'Восстановить пароль',
-    restorePasswordHint: 'Email уже зарегистрирован. Если вы забыли пароль, войдите или восстановите его.',
-    emailExists: 'Email уже зарегистрирован',
-    passwordMismatch: 'Пароли не совпадают',
-    registering: 'Регистрация...',
-    loggingIn: 'Вход...',
-    registerSuccess: 'Регистрация успешна. Теперь войдите.',
-    loginSuccess: 'Вход выполнен.',
-    invalidCredentials: 'Неверный email или пароль',
-    registerFailed: 'Ошибка регистрации',
-    loginFailed: 'Ошибка входа',
-    serverUnreachable: 'сервер недоступен',
-    loggedOut: 'Вы вышли из системы.',
-    loadingHistory: 'Загрузка...',
-    failedLoadHistory: 'Не удалось загрузить историю'
-  },
-  ES: {
-    documentTitle: 'Generador de CV con IA — MVP',
-    pageTitle: 'Generador de CV con IA',
-    topEyebrow: 'Plataforma de carrera con IA transparente',
-    topSubtitle: 'CV y cartas de presentación adaptados con No Lies Mode, controles de idioma y ediciones explicables.',
-    landingTitle: 'Flujo de trabajo de IA transparente para quienes buscan empleo',
-    landingText: 'Cree un perfil profesional maestro, adapte CV y cartas de presentación para cada vacante y conserve el historial de cada carga, consulta y versión generada. Sin afirmaciones falsas. Sin automatización oculta. Solo documentos explicables y adaptados al mercado.',
-    authTitle: 'Autenticación',
-    localeTitle: 'Localización',
-    profileTitle: 'Perfil maestro',
-    uploadLabel: 'Suba el CV (PDF o DOCX):',
-    pasteLabel: 'O pegue el texto de su CV:',
-    regionLabel: 'País/región objetivo',
-    vacancyTitle: 'Texto de la vacante',
-    compareTitle: 'Comparar y resultados generados',
-    analysisTitle: 'Análisis del puesto',
-    resumeTitle: 'CV generado',
-    coverTitle: 'Carta de presentación generada',
-    appLanguageLabel: 'Idioma de la interfaz',
-    resumeLanguageLabel: 'Idioma del CV',
-    namePlaceholder: 'Nombre',
-    emailPlaceholder: 'Correo electrónico',
-    passwordPlaceholder: 'Contraseña',
-    profilePlaceholder: 'Pegue el texto del CV o el perfil JSON',
-    vacancyPlaceholder: 'Pegue el texto o URL de la vacante',
-    registerBtn: 'Registrarse',
-    loginBtn: 'Entrar',
-    logoutBtn: 'Salir',
-    uploadResume: 'Subir y analizar',
-    saveProfile: 'Guardar perfil',
-    importSample: 'Cargar perfil de ejemplo',
-    importVacancy: 'Cargar vacante de ejemplo',
-    analyze: 'Analizar vacante',
-    generate: 'Generar CV',
-    compare: 'Comparar (análisis + resultados)',
-    exportText: 'Exportar texto',
-    exportPdf: 'Exportar PDF',
-    interviewBtn: 'Generar preparación para entrevista',
-    quickStartTitle: 'Inicio rápido',
-    quickStartText: 'Cargue datos de ejemplo, ejecute el análisis y vea cómo su perfil se adapta a distintos mercados.',
-    historyTitle: 'Historial',
-    historyEmpty: 'Todavía no hay historial. Suba, genere o analice algo y aparecerá aquí.',
-    builderTab: 'Constructor',
-    historyTab: 'Historial',
-    recentActivity: 'Actividad reciente',
-    historyRecentActivity: 'Actividad reciente',
-    loginRequiredTitle: 'Se requiere inicio de sesión',
-    loginRequiredText: 'Regístrese o inicie sesión arriba para desbloquear cargas, generación, exportaciones e historial.',
-    darkLabel: 'Oscuro',
-    lightLabel: 'Claro',
-    langEn: 'Inglés',
-    langRu: 'Ruso',
-    langEs: 'Español',
-    notLoggedIn: 'No ha iniciado sesión',
-    loggedInAs: 'Conectado como',
-    needLogin: 'Primero inicie sesión',
-    chooseFile: 'Elija un archivo',
-    parsedOk: 'CV analizado - revise y guarde el perfil',
-    parseFail: 'No se pudo analizar el CV',
-    passwordRules: 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas y minúsculas, un número y un símbolo especial.',
-    confirmPassword: 'Repita la contraseña',
-    restorePassword: 'Restaurar contraseña',
-    restorePasswordHint: 'El correo ya está registrado. Si olvidó su contraseña, inicie sesión o restáurela.',
-    emailExists: 'El correo ya está registrado',
-    passwordMismatch: 'Las contraseñas no coinciden',
-    registering: 'Registrando...',
-    loggingIn: 'Iniciando sesión...',
-    registerSuccess: 'Registro exitoso. Ahora inicie sesión.',
-    loginSuccess: 'Sesión iniciada.',
-    invalidCredentials: 'Correo o contraseña inválidos',
-    registerFailed: 'Error al registrarse',
-    loginFailed: 'Error al iniciar sesión',
-    serverUnreachable: 'servidor no disponible',
-    loggedOut: 'Sesión cerrada.',
-    loadingHistory: 'Cargando...',
-    failedLoadHistory: 'No se pudo cargar el historial'
+    parseFail: 'Не удалось распознать резюме'
   }
 }
 
@@ -272,7 +147,7 @@ function clearFieldError(el) {
   const help = document.getElementById(el.id === 'authPassword' ? 'passwordHelp' : 'emailHelp')
   if (help) {
     if (el.id === 'authPassword') {
-      help.textContent = t('passwordRules')
+      help.textContent = 'Password must be 8+ chars, include upper and lower case, a number and a special character.'
     } else {
       help.innerHTML = '&nbsp;'
     }
@@ -289,9 +164,9 @@ function clearConfirmError() {
 
 function restorePasswordFlow(email) {
   // Simple client-side hint — server-side reset not implemented
-  setAuthNotice(t('restorePasswordHint'), 'error')
+  setAuthNotice('Email already registered. If you forgot your password, try logging in or contact support to restore it.', 'error')
   const emailHelp = document.getElementById('emailHelp')
-  if (emailHelp) emailHelp.innerHTML = `${t('emailExists')} — <a href="mailto:support@example.com?subject=Password%20reset%20for%20${encodeURIComponent(email)}">${t('restorePassword')}</a>`
+  if (emailHelp) emailHelp.innerHTML = `Email exists — <a href="mailto:support@example.com?subject=Password%20reset%20for%20${encodeURIComponent(email)}">Restore password</a>`
 }
 
 function setAuthNotice(message, kind = '') {
@@ -336,11 +211,11 @@ async function loadHistory() {
     list.innerHTML = `<div class="history-empty">${t('needLogin')}</div>`
     return
   }
-  list.innerHTML = `<div class="history-empty">${t('loadingHistory')}</div>`
+  list.innerHTML = '<div class="history-empty">Loading...</div>'
   const res = await fetch(apiBase + '/api/history', { headers: authHeaders() })
   const j = await res.json()
   if (!res.ok) {
-    list.innerHTML = `<div class="history-empty">${j.error || t('failedLoadHistory')}</div>`
+    list.innerHTML = `<div class="history-empty">${j.error || 'Failed to load history'}</div>`
     return
   }
   const items = j.history || []
@@ -390,10 +265,7 @@ function updateAuthStatus(userEmail = '') {
 }
 
 function applyAppLanguage() {
-  document.title = t('documentTitle')
   const map = [
-    ['topEyebrow', 'topEyebrow'],
-    ['topSubtitle', 'topSubtitle'],
     ['authTitle', 'authTitle'],
     ['localeTitle', 'localeTitle'],
     ['profileTitle', 'profileTitle'],
@@ -406,8 +278,7 @@ function applyAppLanguage() {
     ['resumeTitle', 'resumeTitle'],
     ['coverTitle', 'coverTitle'],
     ['appLanguageLabel', 'appLanguageLabel'],
-    ['resumeLanguageLabel', 'resumeLanguageLabel'],
-    ['historyRecentActivity', 'historyRecentActivity']
+    ['resumeLanguageLabel', 'resumeLanguageLabel']
   ]
   map.forEach(([id, key]) => {
     const el = document.getElementById(id)
@@ -430,34 +301,13 @@ function applyAppLanguage() {
   const authName = document.getElementById('authName')
   const authEmail = document.getElementById('authEmail')
   const authPassword = document.getElementById('authPassword')
-  const authPasswordConfirm = document.getElementById('authPasswordConfirm')
   const profile = document.getElementById('profile')
   const vacancy = document.getElementById('vacancy')
   if (authName) authName.placeholder = t('namePlaceholder')
   if (authEmail) authEmail.placeholder = t('emailPlaceholder')
   if (authPassword) authPassword.placeholder = t('passwordPlaceholder')
-  if (authPasswordConfirm) authPasswordConfirm.placeholder = t('confirmPassword')
   if (profile) profile.placeholder = t('profilePlaceholder')
   if (vacancy) vacancy.placeholder = t('vacancyPlaceholder')
-
-  const passwordHelp = document.getElementById('passwordHelp')
-  const confirmField = document.getElementById('fieldConfirm')
-  const restorePasswordBlock = document.getElementById('restorePasswordBlock')
-  const restorePasswordLink = document.getElementById('restorePasswordLink')
-  if (currentAuthMode === 'register') {
-    if (passwordHelp) {
-      passwordHelp.textContent = t('passwordRules')
-      passwordHelp.style.display = 'block'
-    }
-    if (confirmField) confirmField.style.display = ''
-    if (restorePasswordBlock) restorePasswordBlock.style.display = 'none'
-    if (restorePasswordLink) restorePasswordLink.style.display = 'none'
-  } else {
-    if (passwordHelp) passwordHelp.style.display = 'none'
-    if (confirmField) confirmField.style.display = 'none'
-    if (restorePasswordBlock) restorePasswordBlock.style.display = 'block'
-    if (restorePasswordLink) restorePasswordLink.style.display = 'inline'
-  }
 
   // Button text
   const buttonMap = [
@@ -493,13 +343,10 @@ function applyAppLanguage() {
   if (historyHeading) historyHeading.textContent = t('historyTitle')
   const historySubtitle = document.querySelector('#historyView .muted')
   if (historySubtitle) historySubtitle.textContent = t('recentActivity')
-  const restorePasswordLink = document.getElementById('restorePasswordLink')
-  if (restorePasswordLink) restorePasswordLink.textContent = t('restorePassword')
   const historyEmpty = document.querySelector('.history-empty')
   if (historyEmpty && !authToken) historyEmpty.textContent = t('needLogin')
   const currentHistoryList = document.getElementById('historyList')
   if (currentHistoryList && currentView === 'history' && authToken) loadHistory()
-  setAuthMode(currentAuthMode)
 }
 
 function applyTheme() {
@@ -511,10 +358,12 @@ function applyTheme() {
 }
 
 document.getElementById('registerBtn')?.addEventListener('click', async () => {
+  if (currentAuthMode !== 'register') return
   await submitRegister()
 })
 
 document.getElementById('loginBtn')?.addEventListener('click', async () => {
+  if (currentAuthMode !== 'login') return
   await submitLogin()
 })
 
@@ -523,7 +372,7 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   localStorage.removeItem('authToken')
   localStorage.removeItem('userEmail')
   updateAuthStatus('')
-  setAuthNotice(t('loggedOut'))
+  setAuthNotice('Logged out.')
   const historyList = document.getElementById('historyList')
   if (historyList) historyList.innerHTML = `<div class="history-empty">${t('needLogin')}</div>`
   setView('landing')
@@ -693,7 +542,6 @@ function setAuthMode(mode) {
   const emailHelp = document.getElementById('emailHelp')
   const nameHelp = document.getElementById('nameHelp')
   const restorePasswordBlock = document.getElementById('restorePasswordBlock')
-  const restorePasswordLink = document.getElementById('restorePasswordLink')
   if (mode === 'login') {
     loginTab && loginTab.classList.add('active')
     registerTab && registerTab.classList.remove('active')
@@ -704,7 +552,6 @@ function setAuthMode(mode) {
     if (passwordHelp) passwordHelp.style.display = 'none'
     if (nameHelp) nameHelp.innerHTML = '&nbsp;'
     if (restorePasswordBlock) restorePasswordBlock.style.display = 'block'
-    if (restorePasswordLink) restorePasswordLink.style.display = 'inline'
     clearFieldError(document.getElementById('authEmail'))
     clearFieldError(document.getElementById('authPassword'))
     clearConfirmError()
@@ -717,13 +564,12 @@ function setAuthMode(mode) {
     if (registerBtn) registerBtn.style.display = ''
     if (loginBtn) loginBtn.style.display = 'none'
     if (passwordHelp) {
-      passwordHelp.textContent = t('passwordRules')
+      passwordHelp.textContent = 'Password must be 8+ chars, include upper and lower case, a number and a special character.'
       passwordHelp.style.display = 'block'
     }
     if (emailHelp && !emailHelp.textContent) emailHelp.innerHTML = '&nbsp;'
     if (nameHelp) nameHelp.innerHTML = '&nbsp;'
     if (restorePasswordBlock) restorePasswordBlock.style.display = 'none'
-    if (restorePasswordLink) restorePasswordLink.style.display = 'none'
     document.getElementById('authPassword').placeholder = t('passwordPlaceholder')
   }
 }
@@ -755,21 +601,21 @@ async function submitRegister() {
   const v = validatePassword(password)
   if (!v.ok) {
     showFieldError(passwordEl, v.msg)
-    setAuthNotice(t('passwordRules'), 'error')
+    setAuthNotice('Password does not meet requirements', 'error')
     return
   }
   if (password !== passwordConfirm) {
     confirmEl.classList.add('input-error')
     const confirmHelp = document.getElementById('confirmHelp')
     if (confirmHelp) {
-      confirmHelp.textContent = t('passwordMismatch')
+      confirmHelp.textContent = 'Passwords do not match'
       confirmHelp.classList.add('error')
     }
-    setAuthNotice(t('passwordMismatch'), 'error')
+    setAuthNotice('Passwords do not match', 'error')
     return
   }
   try {
-    setAuthNotice(t('registering'))
+    setAuthNotice('Registering...')
     const res = await fetch(apiBase + '/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -778,20 +624,20 @@ async function submitRegister() {
     const j = await (res.headers.get('content-type') || '').includes('application/json') ? await res.json() : {}
     if (!res.ok) {
       if (j && j.error === 'user_exists') {
-        showFieldError(emailEl, t('emailExists'))
+        showFieldError(emailEl, 'Email already registered')
         restorePasswordFlow(email)
         return
       }
-      setAuthNotice(j.error || t('registerFailed'), 'error')
+      setAuthNotice(j.error || 'Register failed', 'error')
       return
     }
-    setAuthNotice(t('registerSuccess'), 'success')
+    setAuthNotice('Registration successful. Please log in.', 'success')
     passwordEl.value = ''
     confirmEl.value = ''
     const emailHelp = document.getElementById('emailHelp')
     if (emailHelp) emailHelp.innerHTML = '&nbsp;'
   } catch (error) {
-    setAuthNotice(`${t('registerFailed')}: ${t('serverUnreachable')}`, 'error')
+    setAuthNotice('Register failed: server unreachable', 'error')
   }
 }
 
@@ -806,7 +652,7 @@ async function submitLogin() {
   const email = emailEl.value.trim()
   const password = passwordEl.value
   try {
-    setAuthNotice(t('loggingIn'))
+    setAuthNotice('Logging in...')
     const res = await fetch(apiBase + '/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -815,21 +661,21 @@ async function submitLogin() {
     const j = await (res.headers.get('content-type') || '').includes('application/json') ? await res.json() : {}
     if (!res.ok) {
       if (j && j.error === 'invalid_credentials') {
-        setAuthNotice(t('invalidCredentials'), 'error')
+        setAuthNotice('Invalid email or password', 'error')
         restorePasswordFlow(email)
       } else {
-        setAuthNotice(j.error || t('loginFailed'), 'error')
+        setAuthNotice(j.error || 'Login failed', 'error')
       }
       return
     }
     authToken = j.token
     localStorage.setItem('authToken', authToken)
     localStorage.setItem('userEmail', j.user.email)
-    setAuthNotice(t('loginSuccess'), 'success')
+    setAuthNotice('Login successful.', 'success')
     updateAuthStatus(j.user.email)
     setView('builder')
   } catch (error) {
-    setAuthNotice(`${t('loginFailed')}: ${t('serverUnreachable')}`, 'error')
+    setAuthNotice('Login failed: server unreachable', 'error')
   }
 }
 
