@@ -14,9 +14,9 @@
     <div class="container">
       <header class="topbar card">
         <div>
-          <p class="eyebrow">Truthful AI Application Platform</p>
+          <p id="topEyebrow" class="eyebrow">Truthful AI Application Platform</p>
           <h1>AI Resume Generator</h1>
-          <p class="subtitle">Tailored resumes and cover letters with No Lies Mode, locale controls, and explainable edits.</p>
+          <p id="topSubtitle" class="subtitle">Tailored resumes and cover letters with No Lies Mode, locale controls, and explainable edits.</p>
         </div>
         <div class="topbar-actions">
           <div class="field-inline">
@@ -24,6 +24,7 @@
             <select id="appLanguage">
               <option value="EN">English</option>
               <option value="RU">Russian</option>
+              <option value="ES">Spanish</option>
             </select>
           </div>
           <button id="themeToggle" class="btn ghost" type="button">Dark</button>
@@ -36,10 +37,10 @@
             <h2 class="landing-title">Truthful AI application workflow for modern job seekers</h2>
             <p class="landing-text">Build a master career profile, tailor resumes and cover letters for each vacancy, and keep a history of every upload, query, and generated version. No fake claims. No hidden automation. Just explainable, market-aware job documents.</p>
             <div class="landing-badges">
-              <span class="badge">Login first</span>
-              <span class="badge">History included</span>
-              <span class="badge">Upload CVs</span>
-              <span class="badge">ATS-aware</span>
+              <span id="badgeLoginFirst" class="badge">Login first</span>
+              <span id="badgeHistoryIncluded" class="badge">History included</span>
+              <span id="badgeUploadCvs" class="badge">Upload CVs</span>
+              <span id="badgeAtsAware" class="badge">ATS-aware</span>
             </div>
           </div>
           <div class="card auth-card">
@@ -182,7 +183,7 @@
           <section class="card hidden" id="historyView">
             <div class="section-head">
               <h2 id="historyTitle">History</h2>
-              <span class="status-pill">Recent activity</span>
+              <span id="historyRecentActivity" class="status-pill">Recent activity</span>
             </div>
             <p class="muted" id="historySubtitle">Saved queries, uploads, and generated outputs appear here after login.</p>
             <div id="historyList" class="history-list"></div>
