@@ -220,4 +220,3 @@ async function parseResumeBuffer(file) {
 
 // export parse helper
 module.exports.parseResumeBuffer = parseResumeBuffer
-
