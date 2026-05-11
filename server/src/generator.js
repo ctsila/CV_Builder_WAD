@@ -101,6 +101,12 @@ function generateResume(profile, vacancyAnalysis, options = {}) {
     } else {
       resume.summary = `Базовый карьерный профиль для ${profile.fullName}.`
     }
+  } else if (language === 'ES') {
+    if (strengths.length) {
+      resume.summary = `${profile.fullName} — experiencia en ${strengths.slice(0,4).map(s => s.skill).join(', ')}. Redacción basada en hechos verificables.`
+    } else {
+      resume.summary = `Perfil profesional base para ${profile.fullName}.`
+    }
   }
   // Region-specific formatting hints (simple)
   if (region === 'DE' || region === 'EU') {
@@ -154,6 +160,10 @@ function generateCoverLetter(profile, vacancyText, vacancyAnalysis, tone = 'conc
     salutation = 'Уважаемый менеджер по найму,'
     localizedIntro = `Меня зовут ${profile.fullName}. Я подаюсь на эту вакансию, потому что мой опыт в ${ (profile.skills||[]).slice(0,5).join(', ') } соответствует требованиям роли.`
     localizedCloser = `С уважением,\n${profile.fullName}`
+  } else if ((language || '').toUpperCase() === 'ES') {
+    salutation = 'Estimado equipo de contratación,'
+    localizedIntro = `Soy ${profile.fullName}. Solicito este puesto porque mi experiencia en ${ (profile.skills||[]).slice(0,5).join(', ') } se alinea con sus requisitos.`
+    localizedCloser = `Atentamente,\n${profile.fullName}`
   }
   const letter = [salutation, localizedIntro, bodyLines.join('\n'), localizedCloser].filter(Boolean).join('\n\n')
   return { letter }
